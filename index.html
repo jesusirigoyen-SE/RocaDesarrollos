@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html
+lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeeves — Propuesta MX · Roca Desarrollos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:   #0A0A0C;
+      --black-2: #111116;
+      --black-3: #18181F;
+      --black-4: #22222B;
+      --gold:        #C9A84C;
+      --gold-light:  #E2C97E;
+      --gold-dim:    rgba(201,168,76,0.10);
+      --gold-border: rgba(201,168,76,0.22);
+      --pacific:        #51ACBC;
+      --pacific-dim:    rgba(81,172,188,0.10);
+      --pacific-border: rgba(81,172,188,0.22);
+      --green:     #4ABCA0;
+      --green-dim: rgba(74,188,160,0.10);
+      --amber:     #D4914A;
+      --amber-dim: rgba(212,145,74,0.10);
+      --red:       #E05555;
+      --text-primary:   #F0EDE6;
+      --text-secondary: #9A9690;
+      --text-muted:     #5A5755;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Urbanist', -apple-system, sans-serif;
+      background: var(--black);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,10,12,0.90);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--black-4);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-wordmark { font-size: 20px; font-weight: 800; letter-spacing: 0.04em; }
+    .nav-pill {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      color: var(--gold); padding: 4px 12px; border-radius: 999px;
+    }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute;
+      top: -100px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 900px;
+      background: radial-gradient(circle, rgba(201,168,76,0.13) 0%, transparent 58%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); background: var(--gold-dim); border: 1px solid var(--gold-border);
+      padding: 6px 18px; border-radius: 999px; margin-bottom: 28px; display: inline-block;
+    }
+    .hero h1 {
+      font-size: clamp(46px, 8vw, 92px); font-weight: 900; line-height: 0.95;
+      letter-spacing: -0.03em; margin-bottom: 24px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 60%, var(--pacific) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 19px); color: var(--text-secondary);
+      max-width: 540px; line-height: 1.7; margin-bottom: 52px;
+    }
+    .hero-card-wrap { perspective: 1000px; margin-bottom: 52px; width: 100%; display: flex; justify-content: center; }
+    .hero-card {
+      width: min(380px, 100%); height: auto; min-height: 200px;
+      background: linear-gradient(135deg, #1c1c28 0%, #111116 100%);
+      border: 1px solid var(--gold-border);
+      border-radius: 22px; padding: 28px 32px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.08);
+      transform: perspective(900px) rotateX(6deg) rotateY(-6deg);
+      transition: transform 0.5s ease;
+    }
+    .hero-card:hover { transform: perspective(900px) rotateX(0deg) rotateY(0deg); }
+    .hero-card::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 65%);
+    }
+    .hc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+    .hc-logo { display: flex; align-items: center; gap: 8px; }
+    .hc-logo-text { font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: rgba(240,237,230,0.5); }
+    .hc-chip { width: 38px; height: 28px; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%); border-radius: 5px; }
+    .hc-num { font-size: 16px; font-weight: 500; letter-spacing: 0.22em; color: rgba(240,237,230,0.5); margin-bottom: 20px; }
+    .hc-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+    .hc-name { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; color: var(--text-primary); }
+    .hc-label-small { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px; }
+    .hc-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      color: var(--gold); padding: 4px 10px; border-radius: 6px;
+    }
+    .hero-stats { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .hstat {
+      background: var(--black-2); border: 1px solid var(--black-4);
+      border-radius: 14px; padding: 18px 26px; text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .hstat:hover { border-color: var(--gold-border); transform: translateY(-3px); }
+    .hstat-num { font-size: 30px; font-weight: 800; color: var(--gold); line-height: 1; }
+    .hstat-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-top: 5px; }
+
+    /* ── SECTION ── */
+    .section { padding: 96px 24px; border-top: 1px solid var(--black-4); }
+    .section-inner { max-width: 1100px; margin: 0 auto; padding: 0 8px; }
+    .section-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .section-h { font-size: clamp(30px, 4.5vw, 52px); font-weight: 900; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .section-sub { font-size: 16px; color: var(--text-secondary); line-height: 1.7; max-width: 520px; margin-bottom: 56px; }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted); animation: bounce 2s infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    /* ── PRICING TIERS ── */
+    .tier-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    @media(max-width:900px){ .tier-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:500px){ .tier-grid { grid-template-columns: 1fr; } }
+
+    .tier-card {
+      background: var(--black-2); border: 1px solid var(--black-4);
+      border-radius: 20px; padding: 28px 24px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: default;
+    }
+    .tier-card::after {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 180px; height: 180px; border-radius: 50%; pointer-events: none;
+    }
+    .tier-card.t1::after { background: radial-gradient(circle, rgba(81,172,188,0.08) 0%, transparent 70%); }
+    .tier-card.t2::after { background: radial-gradient(circle, rgba(74,188,160,0.08) 0%, transparent 70%); }
+    .tier-card.t3::after { background: radial-gradient(circle, rgba(212,145,74,0.08) 0%, transparent 70%); }
+    .tier-card.t4::after { background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%); }
+    .tier-card.t4 { border-color: var(--gold-border); }
+    .tier-card.t4.active-tier { background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 100%); }
+    .tier-card.active-tier { border-color: var(--gold-border); }
+
+    .tier-badge {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 999px; display: inline-block; margin-bottom: 16px;
+    }
+    .t1 .tier-badge { background: var(--pacific-dim); color: var(--pacific); border: 1px solid var(--pacific-border); }
+    .t2 .tier-badge { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,188,160,0.22); }
+    .t3 .tier-badge { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(212,145,74,0.22); }
+    .t4 .tier-badge { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold-border); }
+
+    .tier-users { font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.4; }
+    .tier-price-mxn { font-size: 32px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; color: var(--text-primary); }
+    .tier-price-unit { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-top: 4px; margin-bottom: 8px; }
+    .tier-price-usd { font-size: 13px; font-weight: 700; color: var(--text-secondary); }
+
+    .tier-ff {
+      margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--black-4);
+      font-size: 12px; color: var(--text-muted);
+    }
+    .tier-ff strong { color: var(--pacific); }
+
+    .active-tier-indicator {
+      position: absolute; top: 16px; right: 16px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--green); display: none;
+      box-shadow: 0 0 8px rgba(74,188,160,0.6);
+      animation: pulse 1.5s infinite;
+    }
+    .active-tier .active-tier-indicator { display: block; }
+
+    /* ── FOTO FACTURAS PACKAGES ── */
+    .ff-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    @media(max-width:600px){ .ff-grid { grid-template-columns: 1fr; } }
+    .ff-card {
+      background: var(--black-2); border: 1px solid var(--black-4);
+      border-radius: 16px; padding: 22px 20px;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative; cursor: pointer;
+    }
+    .ff-card:hover { border-color: var(--pacific-border); transform: translateY(-3px); }
+    .ff-card.ff-active { border-color: var(--pacific-border); background: var(--pacific-dim); }
+    .ff-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .ff-included { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+    .ff-price-mxn { font-size: 26px; font-weight: 900; color: var(--pacific); line-height: 1; }
+    .ff-price-detail { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .ff-discount { font-size: 10px; font-weight: 700; background: rgba(74,188,160,0.1); color: var(--green); border: 1px solid rgba(74,188,160,0.2); padding: 2px 8px; border-radius: 999px; display: inline-block; margin-top: 10px; }
+
+    /* ── CALCULATOR ── */
+    .calc-wrapper {
+      background: var(--black-2); border: 1px solid var(--black-4);
+      border-radius: 24px; overflow: hidden;
+    }
+    .calc-header {
+      background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(81,172,188,0.04) 100%);
+      border-bottom: 1px solid var(--black-4);
+      padding: 28px 40px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+    }
+    .calc-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .calc-subtitle { font-size: 12px; color: var(--text-muted); }
+    .calc-subtitle span { color: var(--gold); font-weight: 700; }
+
+    .tdc-wrap {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--black-3); border: 1px solid var(--gold-border);
+      border-radius: 12px; padding: 10px 16px;
+    }
+    .tdc-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; }
+    .tdc-input {
+      background: none; border: none; outline: none;
+      font-family: 'Urbanist', sans-serif; font-size: 20px; font-weight: 800;
+      color: var(--gold); width: 120px; text-align: right;
+    }
+    .tdc-suffix { font-size: 11px; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+
+    .calc-body { display: grid; grid-template-columns: 1fr 1fr; }
+    @media(max-width:768px){ .calc-body { grid-template-columns: 1fr; } }
+
+    .calc-left { padding: 36px 40px; border-right: 1px solid var(--black-4); }
+    .calc-right { padding: 36px 40px; }
+    @media(max-width:768px){ .calc-left { border-right: none; border-bottom: 1px solid var(--black-4); } }
+
+    .calc-section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 24px;
+    }
+
+    .input-group { margin-bottom: 22px; }
+    .input-label {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--text-secondary); display: block; margin-bottom: 8px;
+    }
+    .input-row { display: flex; align-items: center; gap: 8px; }
+    .input-prefix { font-size: 14px; color: var(--text-muted); font-weight: 600; }
+    .calc-input {
+      flex: 1; background: rgba(201,168,76,0.06); border: 1px solid var(--gold-border);
+      border-radius: 10px; padding: 12px 16px;
+      font-family: 'Urbanist', sans-serif; font-size: 16px; font-weight: 700;
+      color: var(--gold); outline: none; width: 100%; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .calc-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
+    .calc-input.blue { background: rgba(81,172,188,0.06); border-color: var(--pacific-border); color: var(--pacific); }
+    .calc-input.blue:focus { border-color: var(--pacific); box-shadow: 0 0 0 3px rgba(81,172,188,0.12); }
+    .input-suffix { font-size: 12px; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+    .input-hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; padding-left: 2px; }
+
+    /* Tier selector inside calc */
+    .tier-select-wrap { margin-bottom: 28px; }
+    .tier-select-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; display: block; }
+    .tier-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    @media(max-width:500px){ .tier-options { grid-template-columns: repeat(2,1fr); } }
+    .tier-opt {
+      background: var(--black-3); border: 1px solid var(--black-4);
+      border-radius: 10px; padding: 10px 8px; text-align: center;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .tier-opt:hover { border-color: var(--gold-border); }
+    .tier-opt.selected { background: var(--gold-dim); border-color: var(--gold-border); }
+    .tier-opt-label { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .tier-opt.selected .tier-opt-label { color: var(--gold); }
+    .tier-opt-price { font-size: 14px; font-weight: 800; color: var(--text-primary); }
+    .tier-opt.selected .tier-opt-price { color: var(--gold); }
+
+    /* Result rows */
+    .result-row {
+      background: var(--black-3); border: 1px solid var(--black-4);
+      border-radius: 12px; padding: 16px 20px; margin-bottom: 10px;
+    }
+    .result-row-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: nowrap; }
+    .result-row-top > div:first-child { min-width: 0; flex: 1 1 0; }
+    .result-name { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+    .result-sub { font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .result-amounts { text-align: right; flex-shrink: 0; }
+    .result-mxn { font-size: 15px; font-weight: 800; color: var(--gold); line-height: 1; }
+    .result-usd { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+    .result-mxn.blue { color: var(--pacific); }
+    .result-mxn.green { color: var(--green); }
+    .result-mxn.red { color: var(--red); }
+
+    .result-total {
+      background: rgba(201,168,76,0.06); border: 1px solid var(--gold-border);
+      border-radius: 12px; padding: 18px 20px; margin-bottom: 10px;
+    }
+
+    .result-neto {
+      background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(74,188,160,0.06) 100%);
+      border: 1px solid var(--gold-border);
+      border-radius: 16px; padding: 24px 20px; margin-top: 16px;
+    }
+    .neto-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .neto-main { font-size: 44px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+    .neto-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    .roi-bar-wrap { margin-top: 18px; }
+    .roi-bar-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .roi-bar-label { font-size: 11px; color: var(--text-muted); }
+    .roi-pct { font-size: 11px; font-weight: 700; color: var(--green); }
+    .roi-track { height: 7px; background: var(--black-4); border-radius: 999px; overflow: hidden; }
+    .roi-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width 0.8s cubic-bezier(0.22,1,0.36,1); width: 0%; }
+
+    /* Breakdown table */
+    .breakdown-table {
+      background: var(--black-3); border: 1px solid var(--black-4);
+      border-radius: 14px; overflow: hidden; margin-top: 28px;
+    }
+    .bt-header {
+      display: grid; grid-template-columns: 1fr 120px 120px 100px;
+      gap: 8px; padding: 12px 20px;
+      background: rgba(201,168,76,0.04); border-bottom: 1px solid var(--black-4);
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+    }
+    @media(max-width:600px){ .bt-header { display: none; } }
+    .bt-row {
+      display: grid; grid-template-columns: 1fr 120px 120px 100px;
+      gap: 8px; padding: 14px 20px; border-bottom: 1px solid var(--black-4);
+      font-size: 13px; align-items: center;
+      transition: background 0.2s;
+    }
+    @media(max-width:600px){ .bt-row { grid-template-columns: 1fr 1fr; } }
+    .bt-row:last-child { border-bottom: none; }
+    .bt-row:hover { background: rgba(201,168,76,0.03); }
+    .bt-name { font-weight: 600; }
+    .bt-val { font-weight: 700; text-align: right; }
+    .bt-val.gold { color: var(--gold); }
+    .bt-val.blue { color: var(--pacific); }
+    .bt-val.muted { color: var(--text-muted); font-weight: 500; }
+    .bt-row.bt-total {
+      background: rgba(201,168,76,0.05); border-top: 1px solid var(--gold-border);
+      font-size: 14px;
+    }
+
+    /* ── CTA ── */
+    .cta-section { background: var(--black-3); text-align: center; padding: 100px 24px; border-top: 1px solid var(--black-4); }
+    .cta-inner { max-width: 700px; margin: 0 auto; }
+    .cta-h { font-size: clamp(28px, 5vw, 52px); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .cta-sub { font-size: 16px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 40px; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--gold); color: #0A0A0C;
+      font-size: 15px; font-weight: 800; letter-spacing: 0.04em;
+      padding: 16px 38px; border-radius: 999px; text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .cta-btn:hover { background: var(--gold-light); transform: scale(1.04); }
+    .cta-note { font-size: 12px; color: var(--text-muted); margin-top: 14px; }
+
+    footer {
+      text-align: center; padding: 30px;
+      border-top: 1px solid var(--black-4);
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+
+
+    /* ── TOOLTIP ── */
+    .info-tooltip { position: relative; display: inline-flex; align-items: center; margin-left: 6px; vertical-align: middle; cursor: default; }
+    .info-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 15px; height: 15px; border-radius: 50%;
+      background: var(--black-4); border: 1px solid var(--gold-border);
+      color: var(--gold); font-size: 9px; font-weight: 800; font-style: italic;
+      line-height: 1; cursor: help;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .info-tooltip:hover .info-icon { background: var(--gold-dim); border-color: var(--gold); }
+    .tooltip-text {
+      visibility: hidden; opacity: 0;
+      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: var(--black-3); border: 1px solid var(--gold-border);
+      color: var(--text-secondary); font-size: 11px; font-weight: 500; font-style: normal;
+      line-height: 1.5; white-space: nowrap; padding: 8px 12px; border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      transition: opacity 0.2s; pointer-events: none; z-index: 200;
+    }
+    .tooltip-text::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: var(--gold-border);
+    }
+    .info-tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+
+    /* ── TOOLTIP ── */
+    .info-tooltip { position: relative; display: inline-flex; align-items: center; margin-left: 6px; vertical-align: middle; cursor: default; }
+    .info-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 15px; height: 15px; border-radius: 50%;
+      background: var(--black-4); border: 1px solid var(--gold-border);
+      color: var(--gold); font-size: 9px; font-weight: 800; font-style: italic;
+      line-height: 1; cursor: help; transition: background 0.2s, border-color 0.2s;
+    }
+    .info-tooltip:hover .info-icon { background: var(--gold-dim); border-color: var(--gold); }
+    .tooltip-text {
+      visibility: hidden; opacity: 0;
+      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: var(--black-3); border: 1px solid var(--gold-border);
+      color: var(--text-secondary); font-size: 11px; font-weight: 500; font-style: normal;
+      line-height: 1.5; white-space: nowrap; padding: 8px 12px; border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      transition: opacity 0.2s; pointer-events: none; z-index: 200;
+    }
+    .tooltip-text::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: var(--gold-border);
+    }
+    .info-tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+    /* inputs no spinner */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    input[type=number] { -moz-appearance: textfield; }
+
+    /* slider */
+    .user-slider {
+      width: 100%; -webkit-appearance: none; appearance: none;
+      height: 6px; border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold) var(--pct,0%), var(--black-4) var(--pct,0%));
+      outline: none; cursor: pointer; margin-top: 12px;
+    }
+    .user-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--gold); border: 3px solid var(--black-2);
+      box-shadow: 0 2px 8px rgba(201,168,76,0.4);
+      cursor: grab; transition: transform 0.15s;
+    }
+    .user-slider::-webkit-slider-thumb:active { transform: scale(1.2); cursor: grabbing; }
+    .user-slider::-moz-range-thumb {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--gold); border: 3px solid var(--black-2); cursor: grab;
+    }
+
+    .lp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 1.5s infinite; display: inline-block; }
+
+    /* Toggle switch */
+    .toggle-switch { position: relative; display: inline-block; width: 36px; height: 20px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--black-4); border-radius: 999px;
+      transition: background 0.25s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--text-muted);
+      left: 3px; top: 3px;
+      transition: transform 0.25s, background 0.25s;
+    }
+    .toggle-switch input:checked + .toggle-slider { background: rgba(81,172,188,0.25); border: 1px solid var(--pacific-border); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); background: var(--pacific); }
+
+    /* divider between sections */
+    .divider-line { border: none; border-top: 1px solid var(--black-4); }
+
+
+    @media(max-width:640px){
+      /* Larger tap targets */
+      .cta-btn { padding: 14px 28px; font-size: 14px; }
+      .ff-card, .tier-card { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+      /* Calculator inputs bigger on mobile */
+      .calc-input { font-size: 18px; padding: 14px 16px; }
+      /* Section headers */
+      .section-h { font-size: clamp(26px, 7vw, 40px); }
+      /* Hero h1 */
+      .hero h1 { font-size: clamp(38px, 10vw, 70px); }
+      /* Neto main number */
+      .neto-main { font-size: clamp(28px, 8vw, 44px); }
+    }
+    /* ══════════════════════════════════
+       RESPONSIVE MOBILE — added
+    ══════════════════════════════════ */
+
+    /* NAV mobile */
+    @media(max-width:768px){
+      nav {
+        padding: 12px 18px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .nav-logo { gap: 8px; }
+      /* Hide nav links on mobile, keep logos + pill */
+      .nav-links { display: none !important; }
+      nav > div:nth-child(2) { gap: 10px; }
+      .nav-pill { font-size: 9px; padding: 3px 9px; }
+    }
+
+    /* Hero card fixed width → fluid */
+    @media(max-width:480px){
+      .hero-card-wrap { width: 100%; padding: 0 8px; }
+      .hero-card { width: 100% !important; height: auto !important; padding: 22px 20px; }
+      .hero { padding: 100px 16px 60px; }
+      .hero-stats { gap: 10px; }
+      .hstat { padding: 14px 16px; }
+    }
+
+    /* All inline 2-col grids → 1 col on mobile */
+    @media(max-width:640px){
+      div[style*="grid-template-columns:1fr 1fr"],
+      div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+      /* Section padding */
+      .section { padding: 60px 16px; }
+      .section-inner { padding: 0; }
+      .calc-left, .calc-right { padding: 24px 20px; }
+      .calc-header { padding: 20px 20px; }
+      /* Breakdown table */
+      .bt-header { display: none; }
+      .bt-row { grid-template-columns: 1fr 1fr !important; gap: 4px; font-size:12px; padding: 10px 14px; }
+    }
+
+    /* Exec card */
+    @media(max-width:480px){
+      #exec-grid { flex-direction: column; align-items: center; }
+      .exec-card { max-width: 100% !important; width: 100% !important; }
+      .cta-section { padding: 60px 16px; }
+    }
+
+    /* FF grid */
+    @media(max-width:480px){
+      .ff-grid { grid-template-columns: 1fr !important; }
+    }
+
+    /* Tier grid already has media queries but reinforce */
+    @media(max-width:400px){
+      .tier-grid { grid-template-columns: 1fr !important; }
+    }
+
+    /* Hero wordmark separator on mobile */
+    @media(max-width:480px){
+      .nav-wordmark { font-size: 16px; }
+    }
+
+    /* Tooltip — show below on mobile */
+    @media(max-width:600px){
+      .tooltip-text { left: auto; right: 0; transform: none; }
+      .tooltip-text::after { left: auto; right: 10px; }
+    }
+
+    /* ══ MOBILE — comprehensive pass ══ */
+    @media(max-width:640px){
+
+      /* Esquema de Pagos buttons */
+      #pago_anual, #pago_4p { padding: 10px 6px !important; }
+
+      /* FF grid in pricing section → 1 col */
+      .ff-grid[style*="repeat(3"] { grid-template-columns: 1fr !important; }
+
+      /* 3-col feature/benefit grids → 1 col */
+      div[style*="grid-template-columns:repeat(3,1fr)"],
+      div[style*="grid-template-columns: repeat(3, 1fr)"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Calc tier-opt buttons: keep 3-col but smaller text */
+      .tier-opt { padding: 10px 6px; }
+      .tier-opt-label { font-size: 9px; }
+      .tier-opt-price { font-size: 12px; }
+
+      /* Result rows — don't clip amounts */
+      .result-mxn { font-size: 13px !important; }
+      .result-usd  { font-size: 10px; }
+
+      /* Best Value card center */
+      #tc4 { margin: 0 auto; }
+
+      /* Hero stats wrap */
+      .hero-stats { flex-wrap: wrap; gap: 8px; }
+      .hstat { flex: 1 1 calc(50% - 8px); min-width: 120px; }
+
+      /* exec / CTA grid */
+      div[style*="grid-template-columns:1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+      /* Breakdown table on mobile: show 2 cols (mes + usd), hide ano */
+      .bt-col-ano { display: none !important; }
+      .bt-row { grid-template-columns: 1fr 1fr !important; }
+    }
+
+    @media(max-width:400px){
+      /* FF calc buttons → 2 per row */
+      div[style*="grid-template-columns:repeat(4,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+      /* Section h2 */
+      .section-h { font-size: clamp(22px, 8vw, 36px) !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo">
+    <!-- Jeeves logo → tryjeeves.com -->
+    <a href="https://www.tryjeeves.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--gold);">
+      <svg width="32" height="32" viewBox="0 0 1590.21 1517.93" xmlns="http://www.w3.org/2000/svg">
+        <circle fill="#020202" cx="798.37" cy="759.62" r="659.19"/>
+        <path fill="#c1a464" d="M703.2,775.19h190.35l-27.93-210.47c68.69-6.56,137.38-13.12,206.08-19.68-46.52-49.28-93.05-98.56-139.57-147.85l-133.75,112.72-133.75-112.72c-46.52,49.28-93.05,98.56-139.57,147.85,68.69,6.56,137.38,13.12,206.08,19.68l-27.93,210.47Z"/>
+        <polygon fill="#c1a464" points="654.57 640.37 504.17 567.02 442.73 632.24 653.08 806.35 654.57 640.37"/>
+        <path fill="#c1a464" d="M775.18,907.85l-113.17-94.12-74.68,75.47c19.33,35.07,45.63,82.62,64.95,117.69,43.29-17.48,79.61-47.42,122.9-64.9v-34.14Z"/>
+        <path fill="#c1a464" d="M673.8,1045.36c5.31,19.79,10.63,39.59,15.94,59.38l26.95,17.3h163.36l26.95-17.3c5.31-19.79,10.63-39.59,15.94-59.38-41.52-9.7-83.05-19.4-124.57-29.09-41.52,9.7-83.05,19.4-124.57,29.09Z"/>
+        <polygon fill="#c1a464" points="943.66 806.35 1154.01 632.24 1092.57 567.02 942.17 640.37 943.66 806.35"/>
+        <path fill="#c1a464" d="M821.56,907.85v34.14c43.29,17.48,78.11,47.42,121.41,64.9,19.33-35.07,47.12-82.62,66.45-117.69l-74.68-75.47-113.17,94.12Z"/>
+      </svg>
+      <span class="nav-wordmark">Jeeves</span>
+    </a>
+    <span style="width:1px;height:24px;background:var(--black-4);display:inline-block;margin:0 16px;"></span>
+    <a href="https://rocadesarrollos.com/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:#ffffff;border-radius:8px;padding:5px 10px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAAClCAYAAAATZ4kkAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjAxNUEzM0M1QTc5NTExRTY4REIzRjA5NDA5QkU0RkUyIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjAxNUEzM0M2QTc5NTExRTY4REIzRjA5NDA5QkU0RkUyIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDE1QTMzQzNBNzk1MTFFNjhEQjNGMDk0MDlCRTRGRTIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDE1QTMzQzRBNzk1MTFFNjhEQjNGMDk0MDlCRTRGRTIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4M0g8SAAAvc0lEQVR42uxd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" alt="Roca Desarrollos" style="height:32px;width:auto;object-fit:contain;"></a>
+  </div>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <div class="nav-links" style="display:flex;gap:20px;">
+      <a href="#sec-hero" style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Tarjetas</a>
+      <a href="#sec-control" style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-muted)'">Control</a>
+      <a href="#sec-contabilidad" style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Contable</a>
+      <a href="#sec-tarjetas" style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Costos</a>
+    </div>
+    <a href="#sec-cta" style="text-decoration:none;"><span class="nav-pill">Propuesta MX</span></a>
+
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="sec-hero">
+  <div class="eyebrow reveal">Control total del gasto empresarial</div>
+  <h1 class="reveal">Tarjetas que<br><em>obedecen tus reglas.</em></h1>
+  <p class="hero-sub reveal">Crea, controla y monitorea cada tarjeta de tu empresa — por usuario, área o evento — con límites en tiempo real, visibilidad total y sin fricción.</p>
+
+  <div class="hero-card-wrap reveal">
+    <div class="hero-card">
+      <div class="hc-top">
+        <div class="hc-logo">
+          <svg width="20" height="20" viewBox="0 0 1590.21 1517.93" xmlns="http://www.w3.org/2000/svg">
+            <circle fill="#020202" cx="798.37" cy="759.62" r="659.19"/>
+            <path fill="#c1a464" d="M703.2,775.19h190.35l-27.93-210.47c68.69-6.56,137.38-13.12,206.08-19.68-46.52-49.28-93.05-98.56-139.57-147.85l-133.75,112.72-133.75-112.72c-46.52,49.28-93.05,98.56-139.57,147.85,68.69,6.56,137.38,13.12,206.08,19.68l-27.93,210.47Z"/>
+            <polygon fill="#c1a464" points="654.57 640.37 504.17 567.02 442.73 632.24 653.08 806.35 654.57 640.37"/>
+            <path fill="#c1a464" d="M775.18,907.85l-113.17-94.12-74.68,75.47c19.33,35.07,45.63,82.62,64.95,117.69,43.29-17.48,79.61-47.42,122.9-64.9v-34.14Z"/>
+            <path fill="#c1a464" d="M673.8,1045.36c5.31,19.79,10.63,39.59,15.94,59.38l26.95,17.3h163.36l26.95-17.3c5.31-19.79,10.63-39.59,15.94-59.38-41.52-9.7-83.05-19.4-124.57-29.09-41.52,9.7-83.05,19.4-124.57,29.09Z"/>
+            <polygon fill="#c1a464" points="943.66 806.35 1154.01 632.24 1092.57 567.02 942.17 640.37 943.66 806.35"/>
+            <path fill="#c1a464" d="M821.56,907.85v34.14c43.29,17.48,78.11,47.42,121.41,64.9,19.33-35.07,47.12-82.62,66.45-117.69l-74.68-75.47-113.17,94.12Z"/>
+          </svg>
+          <span class="hc-logo-text">JEEVES</span>
+        </div>
+        <div class="hc-tag">Activa ✦</div>
+      </div>
+      <div class="hc-chip"></div>
+      <div class="hc-num">•••• •••• •••• 4821</div>
+      <div class="hc-bottom">
+        <div>
+          <div class="hc-label-small">Titular</div>
+          <div class="hc-name" style="font-size:11px;letter-spacing:0.03em;">Iber Morales</div>
+          <div class="hc-label-small" style="margin-top:2px;">Jefe de Financiamientos · Roca Desarrollos</div>
+        </div>
+        <div style="text-align:right">
+          <div class="hc-label-small">Límite mensual</div>
+          <div style="font-size:16px;font-weight:800;color:var(--gold);">$15,000 MXN</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WorldElite badge -->
+  <div class="reveal" style="margin-top:16px;margin-bottom:36px;">
+    <div style="display:inline-flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(201,168,76,0.10) 0%,rgba(201,168,76,0.04) 100%);border:1px solid var(--gold-border);border-radius:14px;padding:14px 24px;">
+      <div style="font-size:26px;">💳</div>
+      <div>
+        <div style="font-size:13px;font-weight:800;color:var(--gold);letter-spacing:0.04em;">5 tarjetas WorldElite incluidas</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Tarjetas adicionales: <strong style="color:var(--text-primary);">$200 USD</strong> c/u</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats reveal">
+    <div class="hstat"><div class="hstat-num">∞</div><div class="hstat-label">Tarjetas ilimitadas</div></div>
+    <div class="hstat"><div class="hstat-num">⚡</div><div class="hstat-label">Emisión instantánea</div></div>
+    <div class="hstat"><div class="hstat-num">150+</div><div class="hstat-label">Países aceptados</div></div>
+    <div class="hstat"><div class="hstat-num">0</div><div class="hstat-label">Sorpresas al mes</div></div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Ver propuesta</span>
+    <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M8 3v10M3 8l5 5 5-5" stroke="#5A5755" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     SECCIÓN — PRECIOS POR TIER (MXN)
+══════════════════════════════════════ -->
+
+
+
+
+
+
+<!-- ══════════════════════════════════
+     SECCIÓN — PLATAFORMA DE CONTROL
+══════════════════════════════════════ -->
+<section id="sec-control" class="section" style="background:var(--black);">
+  <div class="section-inner">
+
+    <div class="reveal">
+      <div class="section-tag">③ Plataforma de Control</div>
+      <h2 class="section-h">Visibilidad total<br><em style="font-style:normal;background:linear-gradient(135deg,var(--green),#7edad0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">del gasto corporativo.</em></h2>
+      <p class="section-sub">Manejo de equipos, límites de gasto y captura de recibos — todo en un solo panel. Tú decides quién gasta cuánto y cuándo.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;" class="reveal">
+
+      <!-- Visibilidad -->
+      <div style="background:var(--black-2);border:1px solid var(--pacific-border);border-radius:18px;padding:26px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(81,172,188,0.08) 0%,transparent 70%);"></div>
+        <div style="font-size:24px;margin-bottom:12px;">👁️</div>
+        <div style="font-size:14px;font-weight:800;color:var(--pacific);margin-bottom:12px;">Visibilidad Total</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Límites por tarjeta y usuario</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Transacciones en tiempo real</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Tarjetas activas y su estado</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Solicitudes pendientes</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Bloqueos y restricciones vigentes</li>
+        </ul>
+      </div>
+
+      <!-- Acciones admin -->
+      <div style="background:var(--black-2);border:1px solid var(--pacific-border);border-radius:18px;padding:26px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(81,172,188,0.08) 0%,transparent 70%);"></div>
+        <div style="font-size:24px;margin-bottom:12px;">🎛️</div>
+        <div style="font-size:14px;font-weight:800;color:var(--pacific);margin-bottom:12px;">Acciones del Admin</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Aprobar / rechazar solicitudes</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Modificar límites en tiempo real</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Congelar o cancelar tarjetas</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Restringir MCC o comercios</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--pacific);flex-shrink:0;"></span>Aprobar excepciones</li>
+        </ul>
+      </div>
+
+      <!-- Equipo financiero -->
+      <div style="background:var(--black-2);border:1px solid rgba(74,188,160,0.25);border-radius:18px;padding:26px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(74,188,160,0.08) 0%,transparent 70%);"></div>
+        <div style="font-size:24px;margin-bottom:12px;">📂</div>
+        <div style="font-size:14px;font-weight:800;color:var(--green);margin-bottom:12px;">Equipo Financiero</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>Validar comprobaciones</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>Conciliar movimientos</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>Monitorear cumplimiento de política</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>Descargar documentación fiscal</li>
+          <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;"></span>Gestionar reembolsos</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Live dashboard strip -->
+    <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:18px;padding:28px 32px;" class="reveal">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(74,188,160,0.1);border:1px solid rgba(74,188,160,0.25);color:var(--green);padding:5px 12px;border-radius:999px;">
+          <span class="lp-dot"></span> En vivo · Tiempo real
+        </span>
+        <span style="font-size:13px;font-weight:700;">Límites de gasto — Mayo 2025</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;color:var(--text-secondary);">Ana Robles · RRHH</span><span style="font-size:12px;font-weight:700;"><span style="color:var(--gold);">$8,400</span><span style="color:var(--text-muted);"> / $15,000</span></span></div>
+          <div style="height:7px;background:var(--black-4);border-radius:999px;overflow:hidden;"><div style="height:100%;width:56%;border-radius:999px;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width 1.5s cubic-bezier(0.22,1,0.36,1);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;color:var(--text-secondary);">Equipo Marketing</span><span style="font-size:12px;font-weight:700;"><span style="color:var(--pacific);">$31,200</span><span style="color:var(--text-muted);"> / $60,000</span></span></div>
+          <div style="height:7px;background:var(--black-4);border-radius:999px;overflow:hidden;"><div style="height:100%;width:52%;border-radius:999px;background:linear-gradient(90deg,var(--pacific),#7ecfde);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;color:var(--text-secondary);">Summit CDMX 2025</span><span style="font-size:12px;font-weight:700;"><span style="color:var(--amber);">$17,600</span><span style="color:var(--text-muted);"> / $20,000</span></span></div>
+          <div style="height:7px;background:var(--black-4);border-radius:999px;overflow:hidden;"><div style="height:100%;width:88%;border-radius:999px;background:linear-gradient(90deg,var(--amber),#e0b060);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;color:var(--text-secondary);">Carlos Vega · Ventas</span><span style="font-size:12px;font-weight:700;"><span style="color:var(--green);">$2,100</span><span style="color:var(--text-muted);"> / $10,000</span></span></div>
+          <div style="height:7px;background:var(--black-4);border-radius:999px;overflow:hidden;"><div style="height:100%;width:21%;border-radius:999px;background:linear-gradient(90deg,var(--green),#7edad0);"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     SECCIÓN — AUTOMATIZACIÓN CONTABLE
+══════════════════════════════════════ -->
+<section id="sec-contabilidad" class="section" style="background:var(--black-3);">
+  <div class="section-inner">
+
+    <div class="reveal">
+      <div class="section-tag">④ Automatización Contable</div>
+      <h2 class="section-h">Del ticket a la factura<br><em style="font-style:normal;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">en minutos.</em></h2>
+      <p class="section-sub">Reglas contables que se aplican solas. Mapeo GL, categorías e integraciones con tu ERP favorito — sin intervención manual.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;align-items:start;" class="reveal">
+
+      <!-- Left: Flujo visual -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+
+        <!-- FotoFacturas highlight -->
+        <div style="background:linear-gradient(135deg,rgba(81,172,188,0.08) 0%,rgba(81,172,188,0.03) 100%);border:1px solid var(--pacific-border);border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:16px;">
+          <div style="font-size:36px;flex-shrink:0;">📸</div>
+          <div>
+            <div style="font-size:14px;font-weight:800;color:var(--pacific);margin-bottom:4px;">FotoFacturas · IA</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Fotografía el ticket → el sistema genera factura <strong style="color:var(--text-primary);">PDF y XML automáticamente</strong> y la asocia a la transacción.</div>
+          </div>
+        </div>
+
+        <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:16px;padding:20px 22px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="font-size:22px;flex-shrink:0;margin-top:2px;">🗺️</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Mapeo de código GL</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">Asignación automática de códigos contables por tipo de transacción, departamento o proveedor.</div>
+          </div>
+        </div>
+
+        <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:16px;padding:20px 22px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="font-size:22px;flex-shrink:0;margin-top:2px;">🏷️</div>
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Categorización automática</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">Clasificación por tipo de gasto y centro de costo — sin etiquetado manual por el equipo.</div>
+          </div>
+        </div>
+
+        <!-- ERP integrations -->
+        <div style="background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:16px;padding:20px 22px;">
+          <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:14px;">🔗 Integraciones ERP</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:8px;padding:10px;text-align:center;font-size:11px;font-weight:700;color:var(--text-secondary);">⚡ NetSuite</div>
+            <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:8px;padding:10px;text-align:center;font-size:11px;font-weight:700;color:var(--text-secondary);">🔵 QuickBooks</div>
+            <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:8px;padding:10px;text-align:center;font-size:11px;font-weight:700;color:var(--text-secondary);">🔗 Jeeves API</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Métodos + beneficios -->
+      <div style="display:flex;flex-direction:column;gap:14px;">
+
+        <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:16px;padding:22px 24px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;">📋 Métodos de comprobación</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;"></span><span style="font-size:13px;"><strong style="color:var(--text-primary);">Foto de ticket</strong><span style="color:var(--text-muted);"> — genera PDF/XML automáticamente</span></span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;"></span><span style="font-size:13px;"><strong style="color:var(--text-primary);">Carga manual</strong><span style="color:var(--text-muted);"> — facturas PDF y XML directas</span></span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;"></span><span style="font-size:13px;"><strong style="color:var(--text-primary);">Tickets digitales</strong><span style="color:var(--text-muted);"> — auto-genera factura</span></span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;"></span><span style="font-size:13px;"><strong style="color:var(--text-primary);">Notas y comprobantes</strong><span style="color:var(--text-muted);"> — escritos por el usuario</span></span></div>
+          </div>
+        </div>
+
+        <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:16px;padding:22px 24px;">
+          <div style="font-size:22px;margin-bottom:10px;">📊</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px;">Reportes a tu medida</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">Exporta y filtra según tu modelo contable — sin trabajo manual, compatible con auditoría.</div>
+        </div>
+
+        <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:16px;padding:22px 24px;">
+          <div style="font-size:22px;margin-bottom:10px;">🔄</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px;">Sincronización automática</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">Tus transacciones se reflejan en tu ERP sin intervención manual. Cierre contable fluido.</div>
+        </div>
+
+        <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:16px;padding:22px 24px;">
+          <div style="font-size:22px;margin-bottom:10px;">🧾</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px;">Comprobación de gastos</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">Adjunta comprobantes y cierra el ciclo contable desde la plataforma — sin correos ni papeles.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     SECCIÓN — ECOSYSTEM OVERVIEW
+══════════════════════════════════════ -->
+<section class="section" style="background:var(--black);">
+  <div class="section-inner">
+
+    <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto 56px;">
+      <div class="section-tag" style="display:inline-block;">El ecosistema completo</div>
+      <h2 class="section-h">Todo conectado.<br><em style="font-style:normal;background:linear-gradient(135deg,var(--gold),var(--pacific));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Un solo panel.</em></h2>
+      <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;">Jeeves no es una tarjeta ni solo pagos. Es la plataforma financiera operativa que reemplaza cuatro herramientas distintas.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;" class="reveal">
+
+      <div style="background:var(--black-2);border:1px solid var(--gold-border);border-radius:16px;padding:24px 18px;text-align:center;">
+        <div style="width:48px;height:48px;border-radius:14px;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px;">💳</div>
+        <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:6px;">Jeeves Card</div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Tarjetas corporativas ilimitadas con control total</div>
+      </div>
+
+      <div style="background:var(--black-2);border:1px solid var(--pacific-border);border-radius:16px;padding:24px 18px;text-align:center;">
+        <div style="width:48px;height:48px;border-radius:14px;background:var(--pacific-dim);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px;">🌐</div>
+        <div style="font-size:13px;font-weight:800;color:var(--pacific);margin-bottom:6px;">Jeeves Pay</div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Pagos a proveedores con 37 días de gracia</div>
+      </div>
+
+      <div style="background:var(--black-2);border:1px solid rgba(212,145,74,0.25);border-radius:16px;padding:24px 18px;text-align:center;">
+        <div style="width:48px;height:48px;border-radius:14px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px;">⚡</div>
+        <div style="font-size:13px;font-weight:800;color:var(--amber);margin-bottom:6px;">Instant Pay</div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Pagos instantáneos con fondos propios</div>
+      </div>
+
+      <div style="background:var(--black-2);border:1px solid rgba(74,188,160,0.25);border-radius:16px;padding:24px 18px;text-align:center;">
+        <div style="width:48px;height:48px;border-radius:14px;background:var(--green-dim);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px;">🎛️</div>
+        <div style="font-size:13px;font-weight:800;color:var(--green);margin-bottom:6px;">Control</div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Visibilidad y gobierno del gasto en tiempo real</div>
+      </div>
+
+      <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:16px;padding:24px 18px;text-align:center;">
+        <div style="width:48px;height:48px;border-radius:14px;background:rgba(201,168,76,0.06);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px;">🧾</div>
+        <div style="font-size:13px;font-weight:800;color:var(--text-secondary);margin-bottom:6px;">Contabilidad</div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Automatización GL, ERP y FotoFacturas</div>
+      </div>
+
+    </div>
+
+    <!-- Stats bar -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px;" class="reveal">
+      <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:14px;padding:22px;text-align:center;">
+        <div style="font-size:32px;font-weight:900;color:var(--gold);line-height:1;">150+</div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:5px;">Países aceptados</div>
+      </div>
+      <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:14px;padding:22px;text-align:center;">
+        <div style="font-size:32px;font-weight:900;color:var(--pacific);line-height:1;">37</div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:5px;">Días de liquidez Pay</div>
+      </div>
+      <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:14px;padding:22px;text-align:center;">
+        <div style="font-size:32px;font-weight:900;color:var(--green);line-height:1;">1%</div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:5px;">Cashback sin tope · 6 meses</div>
+      <div style="font-size:9px;color:var(--text-muted);margin-top:3px;opacity:0.7;">Aplica solo en tarjeta de crédito</div>
+      </div>
+      <div style="background:var(--black-2);border:1px solid var(--black-4);border-radius:14px;padding:22px;text-align:center;">
+        <div style="font-size:28px;font-weight:900;color:var(--amber);line-height:1;">0%</div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:5px;">de interés en uso de tarjetas</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- ══════════════════════════════════
+     SECCIÓN — ESTRUCTURA DE PRECIOS
+══════════════════════════════════════ -->
+<section id="sec-tarjetas" class="section" style="background:var(--black);">
+  <div class="section-inner">
+
+    <div class="reveal">
+      <div class="section-tag">① Estructura de Precios</div>
+      <h2 class="section-h">Precio único,<br><em style="font-style:normal;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">sin sorpresas.</em></h2>
+      <p class="section-sub">Una tarifa todo incluida diseñada para Roca Desarrollos. Todo en un precio claro por usuario.</p>
+    </div>
+
+    <!-- Best Value card — compact, matching tier-card style -->
+    <div class="reveal" style="display:flex;justify-content:center;margin-bottom:16px;">
+      <div class="tier-card t4" id="tc4" style="max-width:340px;width:100%;cursor:default;">
+        <div class="active-tier-indicator" style="display:block;"></div>
+        <div class="tier-badge">Best Value · Roca Desarrollos</div>
+        <div class="tier-users">55+ usuarios / precio por usuario / mes</div>
+        <div class="tier-price-mxn" id="t4_mxn">$189.20</div>
+        <div class="tier-price-unit">MXN / usuario / mes</div>
+        <div class="tier-price-usd" id="t4_usd">≈ USD 8.50 / usuario</div>
+        <div class="tier-ff" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--black-4);">🧾 <strong style="color:var(--text-primary);">200 FotoFacturas incluidas</strong></div>
+      </div>
+    </div>
+
+    <!-- FotoFacturas packages -->
+    <div class="reveal" style="margin-top:40px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--pacific);margin-bottom:8px;">🧾 Add-on · FotoFacturas</div>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Elige si necesitas FotoFacturas adicionales para tu operación.</p>
+
+      <div class="ff-grid" style="grid-template-columns:repeat(2,1fr);">
+        <div class="ff-card" onclick="selectFF(0)">
+          <div class="ff-name">Sin FotoFacturas</div>
+          <div class="ff-included">Sin add-on de facturas</div>
+          <div class="ff-price-mxn" style="color:var(--text-muted);">—</div>
+          <div class="ff-price-detail">No se agrega costo de FotoFacturas</div>
+          <div class="ff-discount">Incluido en plan</div>
+        </div>
+        <div class="ff-card" onclick="selectFF(600)">
+          <div class="ff-name">600 FotoFacturas</div>
+          <div class="ff-included">600 facturas adicionales / mes</div>
+          <div class="ff-price-mxn" id="ff600_mxn">$4,320</div>
+          <div class="ff-price-detail">MXN / mes · <span id="ff600_usd" style="color:var(--text-muted);">≈ USD 3,024/año</span></div>
+          <div class="ff-discount" style="background:rgba(81,172,188,0.15);color:var(--pacific);border-color:rgba(81,172,188,0.3);">$7.20 MXN / factura</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     SECCIÓN — CALCULADORA DINÁMICA
+══════════════════════════════════════ -->
+<section id="sec-calc" class="section" style="background:var(--black-3);">
+  <div class="section-inner">
+
+    <div class="reveal">
+      <div class="section-tag">② Calculadora de Inversión</div>
+      <h2 class="section-h">Calcula tu costo<br><em style="font-style:normal;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">exacto anual.</em></h2>
+      <p class="section-sub">Ajusta los parámetros y visualiza en tiempo real cuánto invierte tu empresa en la plataforma Jeeves — en MXN y USD.</p>
+    </div>
+
+    <div class="calc-wrapper reveal">
+
+      <!-- Header with TDC -->
+      <div class="calc-header">
+        <div>
+          <div class="calc-title">💰 Calculadora de Inversión · México</div>
+          <div class="calc-subtitle">Celdas en <span>dorado</span> = valores editables · Todo se recalcula al instante</div>
+        </div>
+        <div class="tdc-wrap">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div class="tdc-label">Tipo de cambio <span id="tdc-live-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--text-muted);margin-left:4px;vertical-align:middle;" title="Actualizando..."></span></div>
+            <a href="https://www.xe.com/es/currencyconverter/convert/?Amount=1&From=USD&To=MXN" target="_blank" rel="noopener" style="font-size:9px;font-weight:700;letter-spacing:0.08em;color:var(--text-muted);text-decoration:none;opacity:0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Fuente: xe.com ↗</a>
+          </div>
+          <input id="tdc" class="tdc-input" type="number" value="17.20" step="0.10" oninput="recalc()">
+          <div class="tdc-suffix">MXN / USD</div>
+        </div>
+      </div>
+
+      <div class="calc-body">
+
+        <!-- LEFT: Inputs -->
+        <div class="calc-left">
+          <div class="calc-section-label">📋 Configura tu empresa</div>
+
+          <!-- Usuarios -->
+          <div class="input-group">
+            <label class="input-label">Número de usuarios (tarjetas activas)
+              <span class="info-tooltip">
+                <span class="info-icon">i</span>
+                <span class="tooltip-text">Un usuario es un perfil de admin, finanzas, administrador de tarjeta, contador o empleado.</span>
+              </span>
+            </label>
+            <div class="input-row">
+              <input id="usuarios" class="calc-input" type="number" value="60" min="1" max="2000" oninput="syncSlider(); recalc()">
+              <span class="input-suffix">usuarios</span>
+            </div>
+            <input id="slider_usuarios" class="user-slider" type="range" min="55" max="150" value="60" oninput="syncInput(); recalc()">
+            <div class="input-hint" id="hint_tier">→ USD 10.75/usuario · todo incluido</div>
+          </div>
+
+          <!-- Descuento -->
+          <div class="input-group" id="descuento-group" style="display:none;">
+            <label class="input-label">Descuento negociado (%)</label>
+            <div class="input-row">
+              <input id="descuento" class="calc-input" type="number" value="0" min="0" max="50" step="1" oninput="recalc()">
+              <span class="input-suffix">%</span>
+            </div>
+            <div class="input-hint">Descuento aplicado sobre precio de tier</div>
+          </div>
+
+          <!-- FotoFacturas toggle -->
+          <div class="input-group">
+            <label class="input-label">Add-on FotoFacturas</label>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px;">
+              <div class="tier-opt" id="ff_none" onclick="setFF(0)">
+                <div class="tier-opt-label">Sin FF</div>
+                <div class="tier-opt-price">—</div>
+              </div>
+              <div class="tier-opt selected" id="ff_600" onclick="setFF(600)">
+                <div class="tier-opt-label">600 FF</div>
+                <div class="tier-opt-price" id="ffo_600_p">$4,320</div>
+              </div>
+            </div>
+            <div class="input-hint">MXN / mes · $7.20 por factura adicional</div>
+          </div>
+
+          <!-- Esquema de Pagos -->
+          <div class="input-group" style="border-top:1px solid var(--black-4);padding-top:22px;margin-top:4px;">
+            <div class="calc-section-label">💳 Esquema de Pagos</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;">
+              <div class="tier-opt" id="pago_anual" onclick="selectPayment('anual')" style="padding:14px 10px;position:relative;overflow:hidden;">
+                <div style="position:absolute;top:6px;right:6px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0A0A0C;font-size:7px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:999px;">Top</div>
+                <div style="font-size:18px;margin-bottom:6px;">📅</div>
+                <div class="tier-opt-label" style="font-size:9px;margin-bottom:3px;">Pago Anual</div>
+                <div class="tier-opt-price" style="font-size:18px;font-weight:900;color:var(--gold);">8%</div>
+                <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">descuento</div>
+              </div>
+              <div class="tier-opt" id="pago_4p" onclick="selectPayment('4p')" style="padding:14px 10px;">
+                <div style="font-size:18px;margin-bottom:6px;">🔀</div>
+                <div class="tier-opt-label" style="font-size:9px;margin-bottom:3px;">4 Pagos</div>
+                <div class="tier-opt-price" style="font-size:18px;font-weight:900;color:var(--green);">5%</div>
+                <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">descuento</div>
+              </div>
+            </div>
+            <div id="pago_calc_hint" class="input-hint">Selecciona un esquema para aplicar el descuento al total</div>
+          </div>
+
+          <!-- Gasto tarjetas — Cashback (1) -->
+          <div style="border-top:1px solid var(--black-4);padding-top:22px;margin-top:4px;">
+            <div class="calc-section-label">💳 Gasto Corporativo Mensual (Cashback)</div>
+
+            <div class="input-group">
+              <label class="input-label">Gasto mensual en tarjetas (MXN)</label>
+              <div class="input-row">
+                <span class="input-prefix">$</span>
+                <input id="gasto_tarjetas" class="calc-input" type="number" value="600000" step="10000" oninput="recalc()">
+                <span class="input-suffix">MXN/mes</span>
+              </div>
+              <div class="input-hint" id="hint_gasto_anual">Anual: —</div>
+            </div>
+          </div>
+
+          <!-- CAPTURISTA savings (2) -->
+          <div style="border-top:1px solid var(--black-4);padding-top:22px;margin-top:4px;">
+            <div class="calc-section-label">🧑‍💼 Ahorro por Automatización de Facturas</div>
+
+            <div class="input-group">
+              <label class="input-label">Sueldo capturista (MXN/mes)</label>
+              <div class="input-row">
+                <span class="input-prefix">$</span>
+                <input id="sueldo_cap" class="calc-input" type="number" value="25000" step="1000" oninput="recalc()">
+                <span class="input-suffix">MXN/mes</span>
+              </div>
+              <div class="input-hint">Costo mensual del capturista manual</div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">Minutos por factura (captura manual)</label>
+              <div class="input-row">
+                <input id="min_factura" class="calc-input blue" type="number" value="8" step="1" min="1" oninput="recalc()">
+                <span class="input-suffix">min / factura</span>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">Horas trabajadas al mes</label>
+              <div class="input-row">
+                <input id="horas_mes" class="calc-input blue" type="number" value="160" step="8" min="1" oninput="recalc()">
+                <span class="input-suffix">hrs / mes</span>
+              </div>
+              <div class="input-hint" id="hint_cap">Capacidad y costo por factura calculados automáticamente</div>
+            </div>
+          </div>
+
+          <!-- Comisión Valera (7) -->
+          <div style="border-top:1px solid var(--black-4);padding-top:22px;margin-top:4px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+              <label class="toggle-switch">
+                <input type="checkbox" id="valera_check" onchange="toggleValera()">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="calc-section-label" style="margin-bottom:0;">💸 Comisión Valera</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">Activa si el cliente paga comisión Valera — calcula el ahorro equivalente al eliminarla</div>
+
+            <div id="valera-fields" style="display:none;">
+              <div class="input-group">
+                <label class="input-label">¿Qué comisión te cobra Valera? (%)</label>
+                <div class="input-row">
+                  <input id="comision_valera" class="calc-input blue" type="number" value="2.0" step="0.1" min="0" max="20" oninput="recalc()">
+                  <span class="input-suffix">%</span>
+                </div>
+                <div class="input-hint">Se aplica sobre el gasto mensual total en tarjetas</div>
+              </div>
+            </div>
+          </div>
+          <!-- Cajero automático (3) -->
+          <div style="border-top:1px solid var(--black-4);padding-top:22px;margin-top:4px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+              <label class="toggle-switch">
+                <input type="checkbox" id="cajero_check" onchange="toggleCajero()">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="calc-section-label" style="margin-bottom:0;">🏧 Retiros en Cajero Automático</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">Activa si el cliente usa cajeros — calcula el ahorro por comisiones eliminadas</div>
+
+            <div id="cajero-fields" style="display:none;">
+              <div class="input-group">
+                <label class="input-label">Gasto mensual en retiros cajero (MXN)</label>
+                <div class="input-row">
+                  <span class="input-prefix">$</span>
+                  <input id="gasto_cajeros" class="calc-input blue" type="number" value="20000" step="5000" oninput="recalc()">
+                  <span class="input-suffix">MXN/mes</span>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label">Comisión actual por retiro cajero (%)</label>
+                <div class="input-row">
+                  <input id="comision_caj" class="calc-input blue" type="number" value="1.5" step="0.1" min="0" max="10" oninput="recalc()">
+                  <span class="input-suffix">%</span>
+                </div>
+                <div class="input-hint">Jeeves elimina esta comisión → ahorro directo anual</div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- RIGHT: Results -->
+        <div class="calc-right">
+          <div class="calc-section-label">✅ Resumen de Inversión Anual</div>
+
+          <!-- Platform cost -->
+          <div class="result-row">
+            <div class="result-row-top">
+              <div>
+                <div class="result-name">Plataforma Jeeves</div>
+                <div class="result-sub" id="res_tier_label">— usuarios · fee de plataforma incluido</div>
+              </div>
+              <div class="result-amounts">
+                <div class="result-mxn" id="res_plat_mxn">$0</div>
+                <div class="result-usd" id="res_plat_usd">≈ USD 0 / año</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FotoFacturas cost — visible solo con addon -->
+          <div class="result-row" id="res_ff_row" style="display:none;">
+            <div class="result-row-top">
+              <div>
+                <div class="result-name">🧾 FotoFacturas Add-on</div>
+                <div class="result-sub" id="res_ff_label">Sin paquete adicional</div>
+              </div>
+              <div class="result-amounts">
+                <div class="result-mxn blue" id="res_ff_mxn">—</div>
+                <div class="result-usd" id="res_ff_usd">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment scheme discount row -->
+          <div class="result-row" id="res_pago_row" style="display:none;">
+            <div class="result-row-top">
+              <div>
+                <div class="result-name">🎯 Descuento Esquema de Pago</div>
+                <div class="result-sub" id="res_pago_label_val">—</div>
+              </div>
+              <div class="result-amounts">
+                <div class="result-mxn green" id="res_pago_mxn">—</div>
+                <div class="result-usd" id="res_pago_usd">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total investment -->
+          <div class="result-total">
+            <div class="result-row-top">
+              <div style="font-size:13px;font-weight:700;">💳 Total Inversión Plataforma</div>
+              <div class="result-amounts">
+                <div class="result-mxn" id="res_total_mxn" style="font-size:18px;">$0</div>
+                <div class="result-usd" id="res_total_usd">≈ USD 0 / año</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Savings separator -->
+          <div style="border-top:1px solid var(--black-4);margin:20px 0;"></div>
+          <div class="calc-section-label">🎁 Beneficios & Ahorros Estimados</div>
+
+          <!-- Cashback -->
+          <div class="result-row">
+            <div class="result-row-top">
+              <div>
+                <div class="result-name">Cashback 1% · 6 meses</div>
+                <div class="result-sub">Sobre gasto en tarjetas corporativas</div>
+              </div>
+              <div class="result-amounts">
+                <div class="result-mxn green" id="res_cb_mxn">$0</div>
+                <div class="result-usd" id="res_cb_usd">≈ USD 0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Capturista savings -->
+          <div class="result-row" id="res_cap_row">
+            <div class="result-row-top">
+              <div>
+                <div class="result-name">Ahorro en recuperación de facturas</div>
+                <div class="result-sub" id="res_cap_sub">Horas ahorradas vs. captura manual</div>
+              </div>
+              <div class="result-amounts">
+                <div class="result-mxn green" id="res_cap_mxn">$0</div>
+                <div class="result-usd" id="res_cap_usd">≈ USD 0</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--black-4);font-size:11px;color:var(--text-muted);" id="res_cap_detail">—</div>
+          </div>
+
+          <!-- Cajero savings — oculto si comisión = 0 -->
+          <div class="result-row" id="res_caj_row" style="display:none;">
+            <div class="result-row-top">
+              <div>
+                <div class="result-name" id="res_caj_label">Ahorro comisiones cajero</div>
+                <div class="result-sub">Comisión eliminada × gasto anual</div>
+              </div>
+              <div class="result-amounts">
+                <div class="result-mxn green" id="res_caj_mxn">$0</div>
+                <div class="result-usd" id="res_caj_usd">≈ USD 0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Valera savings -->
+          <div class="result-row" id="res_valera_row" style="display:none;">
+            <div class="result-row-top">
+              <div>
+                <div class="result-name" id="res_valera_label">💸 Ahorro comisión Valera</div>
+                <div class="result-sub">Comisión eliminada × gasto mensual en tarjetas</div>
+              </div>
+              <div class="result-amounts">
+                <div class="result-mxn green" id="res_valera_mxn">$0</div>
+                <div class="result-usd" id="res_valera_usd">≈ USD 0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- NETO -->
+          <div class="result-neto">
+            <div class="neto-label">🏆 Inversión Neta Anual (Costo − Ahorros)</div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+              <div>
+                <div class="neto-main" id="res_neto_mxn" style="color:var(--gold);">$0 MXN</div>
+                <div class="neto-sub">/ año · incluye plataforma + add-ons − ahorros</div>
+              </div>
+              <div style="text-align:right;">
+                <div id="res_neto_usd" style="font-size:18px;font-weight:700;color:var(--text-secondary);"></div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">USD equivalente</div>
+              </div>
+            </div>
+            <div class="roi-bar-wrap">
+              <div class="roi-bar-top">
+                <span class="roi-bar-label">Retorno sobre inversión</span>
+                <span class="roi-pct" id="res_roi">—</span>
+              </div>
+              <div class="roi-track"><div class="roi-fill" id="roi_fill"></div></div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;font-size:10px;color:var(--text-muted);line-height:1.6;">
+            * Tipo de cambio configurable. El cashback aplica 6 meses del año. Los ahorros en cajeros son estimaciones basadas en comisiones actuales del mercado.
+          </div>
+          <div style="margin-top:8px;font-size:10px;color:var(--gold);font-weight:600;letter-spacing:0.04em;">💡 Precio más IVA · Tipo de cambio de referencia</div>
+        </div>
+      </div>
+
+
+    </div><!-- /calc-wrapper -->
+
+  </div>
+</section>
+
+
+
+<!-- ══ CTA ══ -->
+<section class="cta-section" id="sec-cta">
+  <div class="cta-inner">
+    <div class="eyebrow reveal">¿Listo para dar el siguiente paso?</div>
+    <h2 class="cta-h reveal">Contáctame.</h2>
+    <p class="cta-sub reveal">Estoy aquí para resolver todas tus dudas y continuar el proceso.</p>
+
+    <!-- Ejecutivo cards -->
+    <div id="exec-grid" class="reveal" style="display:flex;justify-content:center;gap:12px;margin-bottom:32px;text-align:left;">
+
+      <div class="exec-card selected" onclick="selectExec('Paulina Alarcón','paulina.alarcon@tryjeeves.com')" style="max-width:320px;width:100%;">
+        <div class="exec-avatar">PA</div>
+        <div class="exec-info">
+          <div class="exec-name">Paulina Alarcón</div>
+          <div class="exec-role">Account Executive · Jeeves México</div>
+        </div>
+        <div class="exec-check" style="background:var(--green);border-color:var(--green);color:#0A0A0C;box-shadow:0 0 8px rgba(74,188,160,0.4);">✓</div>
+      </div>
+
+    </div>
+
+    <!-- CTA Button -->
+    <button id="exec-btn" class="cta-btn reveal" onclick="openMail()" style="border:none;cursor:pointer;opacity:1;background:var(--gold);">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12v9H2z" stroke="#0A0A0C" stroke-width="1.5" stroke-linejoin="round"/><path d="M2 4l6 5 6-5" stroke="#0A0A0C" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Contactar a Paulina
+    </button>
+    <p class="cta-note reveal" id="exec-note">Se abrirá tu cliente de correo con un mensaje listo para Paulina Alarcón · paulina.alarcon@tryjeeves.com</p>
+  </div>
+</section>
+
+<style>
+  .exec-card {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--black-2); border: 1px solid var(--black-4);
+    border-radius: 14px; padding: 14px 16px;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .exec-card:hover { border-color: var(--gold-border); transform: translateY(-2px); }
+  .exec-card.selected { border-color: var(--gold-border); background: var(--gold-dim); }
+  .exec-avatar {
+    width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #0A0A0C; letter-spacing: 0.04em;
+  }
+  .exec-info { flex: 1; }
+  .exec-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .exec-role { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .exec-check {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 1.5px solid var(--black-4); background: var(--black-3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800; color: transparent;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .exec-card.selected .exec-check {
+    background: var(--green); border-color: var(--green);
+    color: #0A0A0C; box-shadow: 0 0 8px rgba(74,188,160,0.4);
+  }
+  #exec-btn:not([disabled]) { cursor: pointer; opacity: 1; }
+  #exec-btn:not([disabled]):hover { background: var(--gold-light) !important; transform: scale(1.04); }
+</style>
+
+<script>
+  var selectedExecName  = 'Paulina Alarcón';
+  var selectedExecEmail = 'paulina.alarcon@tryjeeves.com';
+
+  function selectExec(name, email) {
+    selectedExecName  = name;
+    selectedExecEmail = email;
+    document.querySelectorAll('.exec-card').forEach(function(c) { c.classList.remove('selected'); });
+    event.currentTarget.classList.add('selected');
+    var btn = document.getElementById('exec-btn');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12v9H2z" stroke="#0A0A0C" stroke-width="1.5" stroke-linejoin="round"/><path d="M2 4l6 5 6-5" stroke="#0A0A0C" stroke-width="1.5" stroke-linecap="round"/></svg> Contactar a ' + name.split(' ')[0];
+    document.getElementById('exec-note').textContent = 'Se abrirá tu cliente de correo con un mensaje listo para ' + name + ' · ' + email;
+  }
+
+  function openMail() {
+    var subject = encodeURIComponent('Propuesta Jeeves — Roca Desarrollos · Solicitud de información');
+    var body = encodeURIComponent(
+      'Hola,\n\n' +
+      'Revisé la propuesta comercial de Jeeves y me gustaría agendar una llamada para conocer más detalles sobre la plataforma.\n\n' +
+      'Quedo en espera de tu respuesta.\n\n' +
+      'Saludos,'
+    );
+    window.location.href = 'mailto:' + selectedExecEmail + '?subject=' + subject + '&body=' + body;
+  }
+</script>
+
+<footer>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <svg width="22" height="22" viewBox="0 0 1590.21 1517.93" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;opacity:0.4">
+        <circle fill="#5A5755" cx="798.37" cy="759.62" r="659.19"/>
+        <path fill="#9A9690" d="M703.2,775.19h190.35l-27.93-210.47c68.69-6.56,137.38-13.12,206.08-19.68-46.52-49.28-93.05-98.56-139.57-147.85l-133.75,112.72-133.75-112.72c-46.52,49.28-93.05,98.56-139.57,147.85,68.69,6.56,137.38,13.12,206.08,19.68l-27.93,210.47Z"/>
+        <polygon fill="#9A9690" points="654.57 640.37 504.17 567.02 442.73 632.24 653.08 806.35 654.57 640.37"/>
+        <path fill="#9A9690" d="M775.18,907.85l-113.17-94.12-74.68,75.47c19.33,35.07,45.63,82.62,64.95,117.69,43.29-17.48,79.61-47.42,122.9-64.9v-34.14Z"/>
+        <path fill="#9A9690" d="M673.8,1045.36c5.31,19.79,10.63,39.59,15.94,59.38l26.95,17.3h163.36l26.95-17.3c5.31-19.79,10.63-39.59,15.94-59.38-41.52-9.7-83.05-19.4-124.57-29.09-41.52,9.7-83.05,19.4-124.57,29.09Z"/>
+        <polygon fill="#9A9690" points="943.66 806.35 1154.01 632.24 1092.57 567.02 942.17 640.37 943.66 806.35"/>
+        <path fill="#9A9690" d="M821.56,907.85v34.14c43.29,17.48,78.11,47.42,121.41,64.9,19.33-35.07,47.12-82.62,66.45-117.69l-74.68-75.47-113.17,94.12Z"/>
+      </svg>
+      <span>Jeeves &nbsp;·&nbsp; tryjeeves.com &nbsp;·&nbsp; Propuesta MX México</span>
+    </div>
+    <div style="width:40px;height:1px;background:var(--black-4);"></div>
+    <div style="font-size:10px;letter-spacing:0.14em;color:var(--text-muted);opacity:0.6;">
+      Made by <span style="color:var(--gold);font-weight:700;opacity:1;">Jesús Irigoyen (Solutions Engineer)</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ──────────────────────────────────
+//  PRICING DATA
+// ──────────────────────────────────
+var PRICE_PER_USER_USD = 10.75; // USD fijo por usuario
+var PLATFORM_FEE_USD = 200;      // Fee de plataforma fijo mensual (USD)
+var selectedPaymentDiscount = 0;
+var FF_PACKAGES = {
+  0:   { facturas: 0,   desc: 'Sin FotoFacturas adicionales' },
+  600: { facturas: 600, desc: '600 FotoFacturas adicionales / mes' }
+};
+var FF_PRICE_MXN = 7.20;
+var FF_BASE_FACTURAS = 0;
+
+var selectedFF = 600;
+var customFF   = 0;
+
+// ──────────────────────────────────
+//  FORMATTERS
+// ──────────────────────────────────
+function fmxn(n) {
+  return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+function fusd(n) {
+  return 'USD ' + n.toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+function fmxnD(n) {
+  return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+// ──────────────────────────────────
+//  SLIDER SYNC
+// ──────────────────────────────────
+function syncSlider() {
+  var u = parseInt(document.getElementById('usuarios').value) || 1;
+  var s = document.getElementById('slider_usuarios');
+  var clamped = Math.min(Math.max(u, 55), 150);
+  s.value = clamped;
+  var pct = ((clamped - 55) / 95 * 100);
+  s.style.setProperty('--pct', pct + '%');
+}
+function syncInput() {
+  var v = parseInt(document.getElementById('slider_usuarios').value) || 1;
+  document.getElementById('usuarios').value = v;
+  var pct = ((v - 55) / 95 * 100);
+  document.getElementById('slider_usuarios').style.setProperty('--pct', pct + '%');
+}
+
+// ──────────────────────────────────
+//  PAYMENT SCHEME
+// ──────────────────────────────────
+var _activePaymentScheme = null;
+
+function selectPayment(scheme) {
+  // Toggle off if already selected
+  if (_activePaymentScheme === scheme) {
+    _activePaymentScheme = null;
+    selectedPaymentDiscount = 0;
+    ['pago_anual','pago_4p'].forEach(function(id) {
+      var el = document.getElementById(id); if (el) el.classList.remove('selected');
+    });
+    var hint = document.getElementById('pago_calc_hint');
+    if (hint) { hint.textContent = 'Selecciona un esquema para aplicar el descuento al total'; hint.style.color = ''; }
+    recalc();
+    return;
+  }
+
+  var configs = {
+    anual: { disc:8,  label:'Pago Anual · 8% OFF',      color:'var(--gold)' },
+    '4p':  { disc:5,  label:'4 Pagos · 5% OFF',         color:'var(--green)' }
+  };
+  var cfg = configs[scheme];
+  if (!cfg) return;
+  _activePaymentScheme = scheme;
+  selectedPaymentDiscount = cfg.disc;
+  ['pago_anual','pago_4p'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.classList.remove('selected');
+  });
+  var map = { anual:'pago_anual', '4p':'pago_4p' };
+  var target = document.getElementById(map[scheme]);
+  if (target) target.classList.add('selected');
+  var hint = document.getElementById('pago_calc_hint');
+  if (hint) { hint.textContent = '→ ' + cfg.label + ' aplicado al total'; hint.style.color = cfg.color; }
+  recalc();
+}
+
+// ──────────────────────────────────
+//  FF SELECTION
+// ──────────────────────────────────
+function setFF(paq) {
+  selectedFF = paq;
+  customFF   = 0;
+  ['ff_none','ff_600'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.classList.remove('selected');
+  });
+  var map = {'0':'ff_none','600':'ff_600'};
+  var target = document.getElementById(map[String(paq)]);
+  if (target) target.classList.add('selected');
+  recalc();
+}
+function selectFF(paq) { setFF(paq); }
+
+function clearCustomFF() {
+  var inp = document.getElementById('ff_custom');
+  if (inp) inp.value = '';
+  var pr = document.getElementById('ff_custom_price');
+  if (pr) pr.textContent = '';
+  customFF = 0;
+}
+
+function applyCustomFF() {
+  var inp = document.getElementById('ff_custom');
+  var val = Math.max(0, parseInt(inp.value) || 0);
+  customFF   = val;
+  selectedFF = -1;
+  ['ff_none','ff_600'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.classList.remove('selected');
+  });
+  var tdc   = parseFloat(document.getElementById('tdc').value) || 17.20;
+  var mxnMes = val * FF_PRICE_MXN;
+  var pr = document.getElementById('ff_custom_price');
+  if (pr) pr.textContent = val > 0 ? fmxn(mxnMes) + '/mes' : '';
+  recalc();
+}
+
+// ──────────────────────────────────
+//  HELPERS
+// ──────────────────────────────────
+function setText(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
+function show(id) { var el = document.getElementById(id); if (el) el.style.display = ''; }
+function hide(id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; }
+
+// ──────────────────────────────────
+//  MAIN RECALC
+// ──────────────────────────────────
+function recalc() {
+  var tdc      = parseFloat(document.getElementById('tdc').value) || 17.20;
+  var users    = parseInt(document.getElementById('usuarios').value) || 1;
+  var desc     = parseFloat(document.getElementById('descuento').value) || 0;
+  var gastoMes = parseFloat(document.getElementById('gasto_tarjetas').value) || 0;
+  var cajeroActivo = document.getElementById('cajero_check').checked;
+  var cajMes   = cajeroActivo ? (parseFloat(document.getElementById('gasto_cajeros').value) || 0) : 0;
+  var comCaj   = cajeroActivo ? (parseFloat(document.getElementById('comision_caj').value) || 0) : 0;
+  var valeraActivo = document.getElementById('valera_check').checked;
+  var comValera = valeraActivo ? (parseFloat(document.getElementById('comision_valera').value) || 0) : 0;
+  var sueldoRaw = document.getElementById('sueldo_cap').value;
+  var sueldoCap = sueldoRaw === '' ? 25000 : (parseFloat(sueldoRaw) || 0);
+  var minFact   = parseFloat(document.getElementById('min_factura').value) || 8;
+  var horasMes  = parseFloat(document.getElementById('horas_mes').value) || 160;
+  var pagoDisc  = selectedPaymentDiscount || 0;
+
+  // Flat pricing
+  var priceUnitUSD = PRICE_PER_USER_USD * (1 - desc/100);
+  var usersAnoUSD  = priceUnitUSD * users * 12;
+  var usersAno     = usersAnoUSD * tdc;
+  var usersMes     = usersAno / 12;
+  // Platform fee fijo $200 USD/mes (no aplica descuento de tier)
+  var platFeeAnoUSD = PLATFORM_FEE_USD * 12;
+  var platFeeAno    = platFeeAnoUSD * tdc;
+  var platFeeMes    = PLATFORM_FEE_USD * tdc;
+  var platAnoUSD = usersAnoUSD + platFeeAnoUSD;
+  var platAno    = usersAno    + platFeeAno;
+  var platMes    = usersMes    + platFeeMes;
+
+  // FF addon
+  var ffAddonFacturas = (function() {
+    if (selectedFF === -1) return customFF;
+    var pkg = FF_PACKAGES[selectedFF];
+    return (pkg && pkg.facturas) ? pkg.facturas : 0;
+  }());
+  var ffMes    = ffAddonFacturas * FF_PRICE_MXN;
+  var ffAno    = ffMes * 12;
+  var ffAnoUSD = ffAno / tdc;
+
+  // Total before payment discount
+  var totalAnoBase    = platAno + ffAno;
+  var totalAnoUSDBase = platAnoUSD + ffAnoUSD;
+
+  // Payment discount
+  var pagoMult    = 1 - pagoDisc / 100;
+  var totalAno    = totalAnoBase    * pagoMult;
+  var totalAnoUSD = totalAnoUSDBase * pagoMult;
+  var totalMes    = totalAno / 12;
+
+  // Savings
+  var cbMXN = gastoMes * 0.01 * 6;
+  var cbUSD = cbMXN / tdc;
+  var cajAno = cajMes * (comCaj/100) * 12;
+  var cajAnoUSD = cajAno / tdc;
+  var valeraAno = valeraActivo ? (gastoMes * (comValera/100) * 12) : 0;
+  var valeraAnoUSD = valeraAno / tdc;
+
+  // Capturista
+  var facturasTotal = 200 + ffAddonFacturas;
+  var costoHora = horasMes > 0 ? (sueldoCap / horasMes) : 0;
+  var horasCapMes = facturasTotal * (minFact / 60);
+  var ahorroCapMes = sueldoCap > 0 ? Math.min(horasCapMes * costoHora, sueldoCap) : 0;
+  var ahorroCapAno = ahorroCapMes * 12;
+  var ahorroCapAnoUSD = ahorroCapAno / tdc;
+  var costoPorFactura = costoHora * (minFact / 60);
+  document.getElementById('hint_cap').textContent =
+    facturasTotal + ' facturas/mes · ' + fmxnD(costoPorFactura) + ' MXN/factura manual · ' +
+    horasCapMes.toFixed(1) + ' hrs ahorradas/mes';
+
+  // Neto & ROI
+  var totalSavings = cbMXN + cajAno + ahorroCapAno + valeraAno;
+  var netoAno    = totalAno - totalSavings;
+  var netoAnoUSD = netoAno / tdc;
+  var netoMes    = netoAno / 12;
+  var roi = totalAno > 0 ? (totalSavings / totalAno) * 100 : 0;
+
+  // ── Best Value card
+  var t4mxn = document.getElementById('t4_mxn');
+  if (t4mxn) t4mxn.textContent = '$' + (PRICE_PER_USER_USD * tdc).toFixed(2);
+  var t4usd = document.getElementById('t4_usd');
+  if (t4usd) t4usd.textContent = '≈ USD ' + PRICE_PER_USER_USD.toFixed(2) + ' / usuario';
+
+  // ── Hints
+  var hintTxt = '→ ' + users + ' usuarios × USD ' + priceUnitUSD.toFixed(2) + ' + $200 fee = USD ' + (priceUnitUSD * users + PLATFORM_FEE_USD).toFixed(2) + '/mes' +
+    (desc > 0 ? ' − ' + desc + '% dto. = USD ' + priceUnitUSD.toFixed(2) + ' neto' : '') +
+    (pagoDisc > 0 ? ' · −' + pagoDisc + '% esquema pago' : '');
+  document.getElementById('hint_tier').textContent = hintTxt;
+  document.getElementById('hint_gasto_anual').textContent =
+    gastoMes > 0 ? 'Anual: ' + fmxn(gastoMes * 12) + ' MXN' : '';
+
+  // ── Results
+  var labelBase = users + ' usuarios · USD ' + PRICE_PER_USER_USD + '/u' + (desc > 0 ? ' −' + desc + '%' : '');
+  var labelDisc = pagoDisc > 0 ? ' · −' + pagoDisc + '% ' + (pagoDisc===8?'anual':'4p') : '';
+  document.getElementById('res_tier_label').textContent = users + ' usuarios × USD ' + priceUnitUSD.toFixed(2) + ' + $200 fee plataforma' + labelDisc;
+  setText('res_plat_mxn', fmxn(platAno) + ' MXN/año');
+  setText('res_plat_usd', '≈ ' + fusd(platAnoUSD) + ' / año');
+
+  // FF row
+  if (ffAddonFacturas > 0) {
+    show('res_ff_row');
+    var ffLabel = selectedFF === -1
+      ? ffAddonFacturas.toLocaleString('es-MX') + ' FotoFacturas personalizadas / mes'
+      : (FF_PACKAGES[selectedFF] ? FF_PACKAGES[selectedFF].desc : ffAddonFacturas + ' FF / mes');
+    document.getElementById('res_ff_label').textContent = ffLabel;
+    setText('res_ff_mxn', fmxn(ffAno) + ' MXN/año');
+    setText('res_ff_usd', '≈ ' + fusd(ffAnoUSD) + ' / año');
+  } else { hide('res_ff_row'); }
+
+  // Payment discount row
+  if (pagoDisc > 0) {
+    show('res_pago_row');
+    setText('res_pago_label_val', pagoDisc + '% OFF (' + (pagoDisc===8?'Anual':'4 Pagos') + ')');
+    setText('res_pago_mxn', '−' + fmxn(totalAnoBase - totalAno) + ' MXN/año');
+    setText('res_pago_usd', '−' + fusd(totalAnoUSDBase - totalAnoUSD) + ' / año');
+  } else { hide('res_pago_row'); }
+
+  setText('res_total_mxn', fmxn(totalAno) + ' MXN/año');
+  setText('res_total_usd', '≈ ' + fusd(totalAnoUSD) + ' / año');
+
+  // Cashback
+  setText('res_cb_mxn', fmxn(cbMXN) + ' MXN');
+  setText('res_cb_usd', '≈ ' + fusd(cbUSD));
+
+  // Cajero
+  if (cajeroActivo && cajAno > 0) {
+    show('res_caj_row');
+    document.getElementById('res_caj_label').textContent = 'Ahorro comisiones cajero (' + comCaj + '%)';
+    setText('res_caj_mxn', fmxn(cajAno) + ' MXN');
+    setText('res_caj_usd', '≈ ' + fusd(cajAnoUSD));
+  } else { hide('res_caj_row'); }
+
+  // Valera
+  if (valeraActivo && valeraAno > 0) {
+    show('res_valera_row');
+    document.getElementById('res_valera_label').textContent = '💸 Ahorro comisión Valera (' + comValera + '%)';
+    setText('res_valera_mxn', fmxn(valeraAno) + ' MXN');
+    setText('res_valera_usd', '≈ ' + fusd(valeraAnoUSD));
+  } else { hide('res_valera_row'); }
+
+  // Capturista
+  setText('res_cap_mxn', fmxn(ahorroCapAno) + ' MXN');
+  setText('res_cap_usd', '≈ ' + fusd(ahorroCapAnoUSD));
+  setText('res_cap_sub', facturasTotal + ' facturas/mes automatizadas vs. captura manual');
+  setText('res_cap_detail',
+    'Capturista: ' + fmxn(sueldoCap) + '/mes · ' + minFact + ' min/factura · ' +
+    horasCapMes.toFixed(1) + ' hrs ahorradas/mes · Costo manual evitado: ' + fmxn(ahorroCapAno) + '/año');
+
+  // Neto
+  var netoEl = document.getElementById('res_neto_mxn');
+  netoEl.textContent = fmxn(netoAno) + ' MXN';
+  netoEl.style.color = netoAno <= 0 ? 'var(--green)' : 'var(--gold)';
+  setText('res_neto_usd', '≈ ' + fusd(netoAnoUSD));
+
+  // ROI
+  var roiEl = document.getElementById('res_roi');
+  if (totalAno > 0 && totalSavings > 0) {
+    roiEl.textContent = roi.toFixed(0) + '% de retorno';
+    roiEl.style.color = roi >= 100 ? 'var(--green)' : 'var(--gold)';
+    document.getElementById('roi_fill').style.width = Math.min(roi, 100) + '%';
+  } else {
+    roiEl.textContent = '—';
+    document.getElementById('roi_fill').style.width = '0%';
+  }
+
+  // Breakdown (safe)
+  setText('bt_users_mes', fmxn(usersMes));
+  setText('bt_users_ano', fmxn(usersAno));
+  setText('bt_users_usd', fusd(usersAnoUSD));
+  setText('bt_plat_mes',  fmxn(platMes));
+  setText('bt_plat_ano',  fmxn(platAno));
+  setText('bt_plat_usd',  fusd(platAnoUSD));
+  // Fee row in breakdown
+  setText('bt_fee_mes',   fmxn(platFeeMes));
+  setText('bt_fee_ano',   fmxn(platFeeAno));
+  setText('bt_fee_usd',   fusd(platFeeAnoUSD));
+  setText('bt_cb_mes',    fmxn(gastoMes * 0.01));
+  setText('bt_cb_ano',    '−' + fmxn(cbMXN));
+  setText('bt_cb_usd',    '−' + fusd(cbUSD));
+  setText('bt_neto_mes',  fmxn(netoMes));
+  setText('bt_neto_ano',  fmxn(netoAno));
+  setText('bt_neto_usd',  fusd(netoAnoUSD));
+
+  // FF package prices
+  [600].forEach(function(k) {
+    var mxnMes = k * FF_PRICE_MXN;
+    var el = document.getElementById('ff'+k+'_mxn');
+    if (el) el.textContent = fmxn(mxnMes);
+    var elU = document.getElementById('ff'+k+'_usd');
+    if (elU) elU.textContent = '≈ USD ' + Math.round((mxnMes * 12) / tdc).toLocaleString('en-US') + '/año';
+    var elP = document.getElementById('ffo_'+k+'_p');
+    if (elP) elP.textContent = fmxn(mxnMes) + '/mes';
+  });
+} // end recalc
+
+
+function toggleCajero() {
+  var checked = document.getElementById('cajero_check').checked;
+  document.getElementById('cajero-fields').style.display = checked ? '' : 'none';
+  setTimeout(recalc, 0);
+}
+
+function toggleValera() {
+  var checked = document.getElementById('valera_check').checked;
+  document.getElementById('valera-fields').style.display = checked ? '' : 'none';
+  setTimeout(recalc, 0);
+}
+
+// ── Scroll reveals ──
+var reveals = document.querySelectorAll('.reveal');
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e, i) {
+    if (e.isIntersecting) {
+      setTimeout(function() { e.target.classList.add('visible'); }, i * 70);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(function(el) { obs.observe(el); });
+
+// ── Init ──
+setFF(600);
+syncSlider();
+recalc();
+
+// ── Tipo de cambio en tiempo real — fuente: xe.com ──
+(function fetchTDC() {
+  var dot = document.getElementById('tdc-live-dot');
+
+  function applyRate(rate, source) {
+    var rounded = Math.round(rate * 100) / 100;
+    document.getElementById('tdc').value = rounded;
+    if (dot) {
+      dot.style.background = 'var(--green)';
+      dot.style.boxShadow = '0 0 6px rgba(74,188,160,0.6)';
+      dot.style.animation = 'pulse 1.5s infinite';
+      dot.title = 'Tipo de cambio en vivo · ' + rounded + ' MXN/USD · ' + source;
+    }
+    recalc();
+  }
+
+  function markError() {
+    if (dot) {
+      dot.style.background = 'var(--amber)';
+      dot.title = 'Sin conexión — valor manual';
+    }
+  }
+
+  // 1️⃣ Intentar con exchangerate-api (gratuito, sin key, CORS ok)
+  fetch('https://open.er-api.com/v6/latest/USD')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var rate = data && data.rates && data.rates.MXN;
+      if (rate) { applyRate(rate, 'open.er-api.com'); return; }
+      throw new Error('no rate');
+    })
+    .catch(function() {
+      // 2️⃣ Fallback: frankfurter.app (Bundesbank data, CORS ok)
+      fetch('https://api.frankfurter.app/latest?from=USD&to=MXN')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var rate = data && data.rates && data.rates.MXN;
+          if (rate) { applyRate(rate, 'frankfurter.app'); return; }
+          throw new Error('no rate');
+        })
+        .catch(function() {
+          // 3️⃣ Fallback: fawazahmed0 (CDN, CORS ok)
+          fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+              var rate = data && data.usd && data.usd.mxn;
+              if (rate) { applyRate(rate, 'currency-api'); return; }
+              throw new Error('no rate');
+            })
+            .catch(markError);
+        });
+    });
+})();
+// Pre-select Pedro Zerboni card
+window.addEventListener('load', function() {
+  var card = document.querySelector('.exec-card');
+  if (card) { card.classList.add('selected'); }
+});
+</script>
+</body>
+</html>
