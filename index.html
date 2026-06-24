@@ -1007,19 +1007,12 @@ lang="es">
       <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--pacific);margin-bottom:8px;">🧾 Add-on · FotoFacturas</div>
       <p style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Elige si necesitas FotoFacturas adicionales para tu operación.</p>
 
-      <div class="ff-grid" style="grid-template-columns:repeat(2,1fr);">
-        <div class="ff-card" onclick="selectFF(0)">
-          <div class="ff-name">Sin FotoFacturas</div>
-          <div class="ff-included">Sin add-on de facturas</div>
-          <div class="ff-price-mxn" style="color:var(--text-muted);">—</div>
-          <div class="ff-price-detail">No se agrega costo de FotoFacturas</div>
-          <div class="ff-discount">Incluido en plan</div>
-        </div>
-        <div class="ff-card" onclick="selectFF(600)">
-          <div class="ff-name">600 FotoFacturas</div>
-          <div class="ff-included">600 facturas adicionales / mes</div>
-          <div class="ff-price-mxn" id="ff600_mxn">$4,320</div>
-          <div class="ff-price-detail">MXN / mes · <span id="ff600_usd" style="color:var(--text-muted);">≈ USD 3,024/año</span></div>
+      <div class="ff-grid" style="grid-template-columns:1fr;max-width:340px;">
+<div class="ff-card" onclick="selectFF(600)">
+          <div class="ff-name">800 FotoFacturas</div>
+          <div class="ff-included">800 facturas adicionales / mes</div>
+          <div class="ff-price-mxn" id="ff800_mxn">$4,320</div>
+          <div class="ff-price-detail">MXN / mes · <span id="ff800_usd" style="color:var(--text-muted);">≈ USD 3,024/año</span></div>
           <div class="ff-discount" style="background:rgba(81,172,188,0.15);color:var(--pacific);border-color:rgba(81,172,188,0.3);">$7.20 MXN / factura</div>
         </div>
       </div>
@@ -1094,14 +1087,10 @@ lang="es">
           <!-- FotoFacturas toggle -->
           <div class="input-group">
             <label class="input-label">Add-on FotoFacturas</label>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px;">
-              <div class="tier-opt" id="ff_none" onclick="setFF(0)">
-                <div class="tier-opt-label">Sin FF</div>
-                <div class="tier-opt-price">—</div>
-              </div>
-              <div class="tier-opt selected" id="ff_600" onclick="setFF(600)">
-                <div class="tier-opt-label">600 FF</div>
-                <div class="tier-opt-price" id="ffo_600_p">$4,320</div>
+            <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:4px;">
+<div class="tier-opt selected" id="ff_800" onclick="setFF(800)">
+                <div class="tier-opt-label">800 FF</div>
+                <div class="tier-opt-price" id="ffo_800_p">$4,320</div>
               </div>
             </div>
             <div class="input-hint">MXN / mes · $7.20 por factura adicional</div>
@@ -1115,13 +1104,13 @@ lang="es">
                 <div style="position:absolute;top:6px;right:6px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0A0A0C;font-size:7px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:999px;">Top</div>
                 <div style="font-size:18px;margin-bottom:6px;">📅</div>
                 <div class="tier-opt-label" style="font-size:9px;margin-bottom:3px;">Pago Anual</div>
-                <div class="tier-opt-price" style="font-size:18px;font-weight:900;color:var(--gold);">8%</div>
+                <div class="tier-opt-price" style="font-size:18px;font-weight:900;color:var(--gold);">15%</div>
                 <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">descuento</div>
               </div>
               <div class="tier-opt" id="pago_4p" onclick="selectPayment('4p')" style="padding:14px 10px;">
                 <div style="font-size:18px;margin-bottom:6px;">🔀</div>
                 <div class="tier-opt-label" style="font-size:9px;margin-bottom:3px;">4 Pagos</div>
-                <div class="tier-opt-price" style="font-size:18px;font-weight:900;color:var(--green);">5%</div>
+                <div class="tier-opt-price" style="font-size:18px;font-weight:900;color:var(--green);">10%</div>
                 <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">descuento</div>
               </div>
             </div>
@@ -1509,13 +1498,12 @@ var PRICE_PER_USER_USD = 10.75; // USD fijo por usuario
 var PLATFORM_FEE_USD = 200;      // Fee de plataforma fijo mensual (USD)
 var selectedPaymentDiscount = 0;
 var FF_PACKAGES = {
-  0:   { facturas: 0,   desc: 'Sin FotoFacturas adicionales' },
-  600: { facturas: 600, desc: '600 FotoFacturas adicionales / mes' }
+  800: { facturas: 800, desc: '800 FotoFacturas adicionales / mes' }
 };
 var FF_PRICE_MXN = 7.20;
 var FF_BASE_FACTURAS = 0;
 
-var selectedFF = 600;
+var selectedFF = 800;
 var customFF   = 0;
 
 // ──────────────────────────────────
@@ -1569,8 +1557,8 @@ function selectPayment(scheme) {
   }
 
   var configs = {
-    anual: { disc:8,  label:'Pago Anual · 8% OFF',      color:'var(--gold)' },
-    '4p':  { disc:5,  label:'4 Pagos · 5% OFF',         color:'var(--green)' }
+    anual: { disc:15, label:'Pago Anual · 15% OFF',     color:'var(--gold)' },
+    '4p':  { disc:10, label:'4 Pagos · 10% OFF',        color:'var(--green)' }
   };
   var cfg = configs[scheme];
   if (!cfg) return;
@@ -1593,10 +1581,10 @@ function selectPayment(scheme) {
 function setFF(paq) {
   selectedFF = paq;
   customFF   = 0;
-  ['ff_none','ff_600'].forEach(function(id) {
+  ['ff_800'].forEach(function(id) {
     var el = document.getElementById(id); if (el) el.classList.remove('selected');
   });
-  var map = {'0':'ff_none','600':'ff_600'};
+  var map = {'800':'ff_800'};
   var target = document.getElementById(map[String(paq)]);
   if (target) target.classList.add('selected');
   recalc();
@@ -1616,7 +1604,7 @@ function applyCustomFF() {
   var val = Math.max(0, parseInt(inp.value) || 0);
   customFF   = val;
   selectedFF = -1;
-  ['ff_none','ff_600'].forEach(function(id) {
+  ['ff_800'].forEach(function(id) {
     var el = document.getElementById(id); if (el) el.classList.remove('selected');
   });
   var tdc   = parseFloat(document.getElementById('tdc').value) || 17.20;
@@ -1728,7 +1716,7 @@ function recalc() {
 
   // ── Results
   var labelBase = users + ' usuarios · USD ' + PRICE_PER_USER_USD + '/u' + (desc > 0 ? ' −' + desc + '%' : '');
-  var labelDisc = pagoDisc > 0 ? ' · −' + pagoDisc + '% ' + (pagoDisc===8?'anual':'4p') : '';
+  var labelDisc = pagoDisc > 0 ? ' · −' + pagoDisc + '% ' + (pagoDisc===15?'anual':'4p') : '';
   document.getElementById('res_tier_label').textContent = users + ' usuarios × USD ' + priceUnitUSD.toFixed(2) + ' + $200 fee plataforma' + labelDisc;
   setText('res_plat_mxn', fmxn(platAno) + ' MXN/año');
   setText('res_plat_usd', '≈ ' + fusd(platAnoUSD) + ' / año');
@@ -1747,7 +1735,7 @@ function recalc() {
   // Payment discount row
   if (pagoDisc > 0) {
     show('res_pago_row');
-    setText('res_pago_label_val', pagoDisc + '% OFF (' + (pagoDisc===8?'Anual':'4 Pagos') + ')');
+    setText('res_pago_label_val', pagoDisc + '% OFF (' + (pagoDisc===15?'Anual':'4 Pagos') + ')');
     setText('res_pago_mxn', '−' + fmxn(totalAnoBase - totalAno) + ' MXN/año');
     setText('res_pago_usd', '−' + fusd(totalAnoUSDBase - totalAnoUSD) + ' / año');
   } else { hide('res_pago_row'); }
@@ -1819,7 +1807,7 @@ function recalc() {
   setText('bt_neto_usd',  fusd(netoAnoUSD));
 
   // FF package prices
-  [600].forEach(function(k) {
+  [800].forEach(function(k) {
     var mxnMes = k * FF_PRICE_MXN;
     var el = document.getElementById('ff'+k+'_mxn');
     if (el) el.textContent = fmxn(mxnMes);
@@ -1856,7 +1844,7 @@ var obs = new IntersectionObserver(function(entries) {
 reveals.forEach(function(el) { obs.observe(el); });
 
 // ── Init ──
-setFF(600);
+setFF(800);
 syncSlider();
 recalc();
 
