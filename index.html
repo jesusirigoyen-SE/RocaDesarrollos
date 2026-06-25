@@ -215,7 +215,7 @@ lang="es">
     .ff-card.ff-active { border-color: var(--pacific-border); background: var(--pacific-dim); }
     .ff-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
     .ff-included { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
-    .ff-price-mxn { font-size: 26px; font-weight: 900; color: var(--pacific); line-height: 1; }
+    .ff-price-mxn { font-size: 26px; font-weight: 900; color: var(--text-primary); line-height: 1; letter-spacing: -0.02em; }
     .ff-price-detail { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
     .ff-discount { font-size: 10px; font-weight: 700; background: rgba(74,188,160,0.1); color: var(--green); border: 1px solid rgba(74,188,160,0.2); padding: 2px 8px; border-radius: 999px; display: inline-block; margin-top: 10px; }
 
@@ -1011,9 +1011,9 @@ lang="es">
 <div class="ff-card" onclick="selectFF(600)">
           <div class="ff-name">800 FotoFacturas</div>
           <div class="ff-included">800 facturas adicionales / mes</div>
-          <div class="ff-price-mxn" id="ff800_mxn">$4,320</div>
-          <div class="ff-price-detail">MXN / mes · <span id="ff800_usd" style="color:var(--text-muted);">≈ USD 3,024/año</span></div>
-          <div class="ff-discount" style="background:rgba(81,172,188,0.15);color:var(--pacific);border-color:rgba(81,172,188,0.3);">$7.20 MXN / factura</div>
+          <div class="ff-price-mxn" id="ff800_mxn">$6,264</div>
+          <div class="ff-price-detail" style="font-size:11px;font-weight:600;color:var(--text-muted);margin-top:4px;margin-bottom:8px;">MXN / mes</div>
+          <div class="ff-discount" style="background:rgba(81,172,188,0.15);color:var(--pacific);border-color:rgba(81,172,188,0.3);">$0.45 USD / factura</div>
         </div>
       </div>
     </div>
@@ -1047,7 +1047,7 @@ lang="es">
             <div class="tdc-label">Tipo de cambio <span id="tdc-live-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--text-muted);margin-left:4px;vertical-align:middle;" title="Actualizando..."></span></div>
             <a href="https://www.xe.com/es/currencyconverter/convert/?Amount=1&From=USD&To=MXN" target="_blank" rel="noopener" style="font-size:9px;font-weight:700;letter-spacing:0.08em;color:var(--text-muted);text-decoration:none;opacity:0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Fuente: xe.com ↗</a>
           </div>
-          <input id="tdc" class="tdc-input" type="number" value="17.20" step="0.10" oninput="recalc()">
+          <input id="tdc" class="tdc-input" type="number" value="17.55" step="0.10" oninput="recalc()">
           <div class="tdc-suffix">MXN / USD</div>
         </div>
       </div>
@@ -1090,10 +1090,10 @@ lang="es">
             <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:4px;">
 <div class="tier-opt selected" id="ff_800" onclick="setFF(800)">
                 <div class="tier-opt-label">800 FF</div>
-                <div class="tier-opt-price" id="ffo_800_p">$4,320</div>
+                <div class="tier-opt-price" id="ffo_800_p">$6,264</div>
               </div>
             </div>
-            <div class="input-hint">MXN / mes · $7.20 por factura adicional</div>
+            <div class="input-hint">MXN / mes · $0.45 USD por factura · calculado al tipo de cambio vigente</div>
           </div>
 
           <!-- Esquema de Pagos -->
@@ -1247,7 +1247,7 @@ lang="es">
                 <div class="result-sub" id="res_ff_label">Sin paquete adicional</div>
               </div>
               <div class="result-amounts">
-                <div class="result-mxn blue" id="res_ff_mxn">—</div>
+                <div class="result-mxn" id="res_ff_mxn">—</div>
                 <div class="result-usd" id="res_ff_usd">—</div>
               </div>
             </div>
@@ -1500,7 +1500,7 @@ var selectedPaymentDiscount = 0;
 var FF_PACKAGES = {
   800: { facturas: 800, desc: '800 FotoFacturas adicionales / mes' }
 };
-var FF_PRICE_MXN = 7.20;
+var FF_PRICE_USD = 0.45; // USD por factura (se convierte a MXN con TDC en tiempo real)
 var FF_BASE_FACTURAS = 0;
 
 var selectedFF = 800;
@@ -1607,8 +1607,9 @@ function applyCustomFF() {
   ['ff_800'].forEach(function(id) {
     var el = document.getElementById(id); if (el) el.classList.remove('selected');
   });
-  var tdc   = parseFloat(document.getElementById('tdc').value) || 17.20;
-  var mxnMes = val * FF_PRICE_MXN;
+  var tdc   = parseFloat(document.getElementById('tdc').value) || 17.55;
+  var tdcV  = parseFloat(document.getElementById('tdc').value) || 17.55;
+  var mxnMes = val * FF_PRICE_USD * tdcV;
   var pr = document.getElementById('ff_custom_price');
   if (pr) pr.textContent = val > 0 ? fmxn(mxnMes) + '/mes' : '';
   recalc();
@@ -1625,7 +1626,7 @@ function hide(id) { var el = document.getElementById(id); if (el) el.style.displ
 //  MAIN RECALC
 // ──────────────────────────────────
 function recalc() {
-  var tdc      = parseFloat(document.getElementById('tdc').value) || 17.20;
+  var tdc      = parseFloat(document.getElementById('tdc').value) || 17.55;
   var users    = parseInt(document.getElementById('usuarios').value) || 1;
   var desc     = parseFloat(document.getElementById('descuento').value) || 0;
   var gastoMes = parseFloat(document.getElementById('gasto_tarjetas').value) || 0;
@@ -1659,7 +1660,7 @@ function recalc() {
     var pkg = FF_PACKAGES[selectedFF];
     return (pkg && pkg.facturas) ? pkg.facturas : 0;
   }());
-  var ffMes    = ffAddonFacturas * FF_PRICE_MXN;
+  var ffMes    = ffAddonFacturas * FF_PRICE_USD * tdc;
   var ffAno    = ffMes * 12;
   var ffAnoUSD = ffAno / tdc;
 
@@ -1729,7 +1730,7 @@ function recalc() {
       : (FF_PACKAGES[selectedFF] ? FF_PACKAGES[selectedFF].desc : ffAddonFacturas + ' FF / mes');
     document.getElementById('res_ff_label').textContent = ffLabel;
     setText('res_ff_mxn', fmxn(ffAno) + ' MXN/año');
-    setText('res_ff_usd', '≈ ' + fusd(ffAnoUSD) + ' / año');
+    setText('res_ff_usd', '≈ ' + fusd(ffAnoUSD) + ' USD/año');
   } else { hide('res_ff_row'); }
 
   // Payment discount row
@@ -1808,11 +1809,12 @@ function recalc() {
 
   // FF package prices
   [800].forEach(function(k) {
-    var mxnMes = k * FF_PRICE_MXN;
+    var usdMes  = k * FF_PRICE_USD;
+    var mxnMes  = usdMes * tdc;
     var el = document.getElementById('ff'+k+'_mxn');
     if (el) el.textContent = fmxn(mxnMes);
     var elU = document.getElementById('ff'+k+'_usd');
-    if (elU) elU.textContent = '≈ USD ' + Math.round((mxnMes * 12) / tdc).toLocaleString('en-US') + '/año';
+    if (elU) elU.textContent = '≈ USD ' + Math.round(usdMes * 12).toLocaleString('en-US') + '/año';
     var elP = document.getElementById('ffo_'+k+'_p');
     if (elP) elP.textContent = fmxn(mxnMes) + '/mes';
   });
@@ -1848,58 +1850,111 @@ setFF(800);
 syncSlider();
 recalc();
 
-// ── Tipo de cambio en tiempo real — fuente: xe.com ──
+// ── Tipo de cambio en tiempo real — multi-fuente con caché ──────────────────
 (function fetchTDC() {
-  var dot = document.getElementById('tdc-live-dot');
+  var CACHE_KEY  = 'jeeves_tdc_cache';
+  var CACHE_TTL  = 3 * 60 * 60 * 1000; // 3 horas en ms
+  var dot        = document.getElementById('tdc-live-dot');
+  var applied    = false;
 
-  function applyRate(rate, source) {
+  // ── Marca el dot según estado ────────────────────────────────────────────
+  function markDot(state, title) {
+    if (!dot) return;
+    var styles = {
+      live:    { bg: 'var(--green)',  shadow: '0 0 6px rgba(74,188,160,0.6)', anim: 'pulse 1.5s infinite' },
+      cache:   { bg: 'var(--pacific)',shadow: '0 0 4px rgba(81,172,188,0.4)', anim: 'none' },
+      error:   { bg: 'var(--amber)',  shadow: 'none',                          anim: 'none' }
+    };
+    var s = styles[state] || styles.error;
+    dot.style.background  = s.bg;
+    dot.style.boxShadow   = s.shadow;
+    dot.style.animation   = s.anim;
+    dot.title             = title;
+  }
+
+  // ── Aplica la tasa al input y recalcula ──────────────────────────────────
+  function applyRate(rate, source, fromCache) {
+    if (applied && !fromCache) return;   // ya tenemos vivo, ignorar caché tardía
+    applied = true;
     var rounded = Math.round(rate * 100) / 100;
     document.getElementById('tdc').value = rounded;
-    if (dot) {
-      dot.style.background = 'var(--green)';
-      dot.style.boxShadow = '0 0 6px rgba(74,188,160,0.6)';
-      dot.style.animation = 'pulse 1.5s infinite';
-      dot.title = 'Tipo de cambio en vivo · ' + rounded + ' MXN/USD · ' + source;
+    markDot(fromCache ? 'cache' : 'live',
+      (fromCache ? '💾 Caché · ' : '🟢 En vivo · ') + rounded + ' MXN/USD · ' + source);
+    // Guarda en caché localStorage
+    if (!fromCache) {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ rate: rate, ts: Date.now(), source: source }));
+      } catch(e) {}
     }
     recalc();
   }
 
   function markError() {
-    if (dot) {
-      dot.style.background = 'var(--amber)';
-      dot.title = 'Sin conexión — valor manual';
-    }
+    if (!applied) markDot('error', '⚠️ Sin conexión — editá el valor manualmente');
   }
 
-  // 1️⃣ Intentar con exchangerate-api (gratuito, sin key, CORS ok)
-  fetch('https://open.er-api.com/v6/latest/USD')
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      var rate = data && data.rates && data.rates.MXN;
-      if (rate) { applyRate(rate, 'open.er-api.com'); return; }
-      throw new Error('no rate');
-    })
-    .catch(function() {
-      // 2️⃣ Fallback: frankfurter.app (Bundesbank data, CORS ok)
-      fetch('https://api.frankfurter.app/latest?from=USD&to=MXN')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          var rate = data && data.rates && data.rates.MXN;
-          if (rate) { applyRate(rate, 'frankfurter.app'); return; }
-          throw new Error('no rate');
-        })
-        .catch(function() {
-          // 3️⃣ Fallback: fawazahmed0 (CDN, CORS ok)
-          fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-              var rate = data && data.usd && data.usd.mxn;
-              if (rate) { applyRate(rate, 'currency-api'); return; }
-              throw new Error('no rate');
-            })
-            .catch(markError);
-        });
+  // ── 0️⃣ Carga caché inmediatamente (sin esperar la red) ──────────────────
+  try {
+    var cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+    if (cached && cached.rate && (Date.now() - cached.ts) < CACHE_TTL) {
+      applyRate(cached.rate, cached.source + ' (caché)', true);
+    }
+  } catch(e) {}
+
+  // ── Función genérica de fetch con timeout ────────────────────────────────
+  function fetchWithTimeout(url, timeoutMs) {
+    return new Promise(function(resolve, reject) {
+      var done = false;
+      var timer = setTimeout(function() {
+        if (!done) { done = true; reject(new Error('timeout')); }
+      }, timeoutMs || 4000);
+      fetch(url).then(function(r) {
+        if (!done) { done = true; clearTimeout(timer); resolve(r); }
+      }).catch(function(e) {
+        if (!done) { done = true; clearTimeout(timer); reject(e); }
+      });
     });
+  }
+
+  // ── Fuentes en paralelo: gana la más rápida ──────────────────────────────
+  var sources = [
+    {
+      url:    'https://open.er-api.com/v6/latest/USD',
+      parse:  function(d) { return d && d.rates && d.rates.MXN; },
+      name:   'open.er-api.com'
+    },
+    {
+      url:    'https://api.frankfurter.app/latest?from=USD&to=MXN',
+      parse:  function(d) { return d && d.rates && d.rates.MXN; },
+      name:   'frankfurter.app'
+    },
+    {
+      url:    'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+      parse:  function(d) { return d && d.usd && d.usd.mxn; },
+      name:   'fawazahmed0-cdn'
+    },
+    {
+      url:    'https://api.exchangerate-api.com/v4/latest/USD',
+      parse:  function(d) { return d && d.rates && d.rates.MXN; },
+      name:   'exchangerate-api.com'
+    }
+  ];
+
+  // Lanza todas en paralelo; applyRate ignora respuestas tardías si ya hay vivo
+  sources.forEach(function(src) {
+    fetchWithTimeout(src.url, 5000)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var rate = src.parse(data);
+        if (rate && rate > 10 && rate < 50) {   // sanity check rango MXN
+          applyRate(rate, src.name, false);
+        }
+      })
+      .catch(function() {});  // silencio; otra fuente cubrirá
+  });
+
+  // ── Timeout final: si ninguna respondió en 6s, marcar error ─────────────
+  setTimeout(markError, 6000);
 })();
 // Pre-select Pedro Zerboni card
 window.addEventListener('load', function() {
