@@ -575,7 +575,7 @@ lang="es">
     @media(max-width:640px){
 
       /* Esquema de Pagos buttons */
-      #pago_anual, #pago_4p { padding: 10px 6px !important; }
+      #pago_3p, #pago_2p { padding: 10px 6px !important; }
 
       /* FF grid in pricing section → 1 col */
       .ff-grid[style*="repeat(3"] { grid-template-columns: 1fr !important; }
@@ -1100,16 +1100,16 @@ lang="es">
           <div class="input-group" style="border-top:1px solid var(--black-4);padding-top:22px;margin-top:4px;">
             <div class="calc-section-label">💳 Esquema de Pagos</div>
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;">
-              <div class="tier-opt" id="pago_anual" onclick="selectPayment('anual')" style="padding:14px 10px;position:relative;overflow:hidden;">
+              <div class="tier-opt" id="pago_3p" onclick="selectPayment('3p')" style="padding:14px 10px;position:relative;overflow:hidden;">
                 <div style="position:absolute;top:6px;right:6px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0A0A0C;font-size:7px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:999px;">Top</div>
                 <div style="font-size:18px;margin-bottom:6px;">📅</div>
-                <div class="tier-opt-label" style="font-size:9px;margin-bottom:3px;">Pago Anual</div>
+                <div class="tier-opt-label" style="font-size:9px;margin-bottom:3px;">3 Pagos</div>
                 <div class="tier-opt-price" style="font-size:18px;font-weight:900;color:var(--gold);">15%</div>
                 <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">descuento</div>
               </div>
-              <div class="tier-opt" id="pago_4p" onclick="selectPayment('4p')" style="padding:14px 10px;">
+              <div class="tier-opt" id="pago_2p" onclick="selectPayment('2p')" style="padding:14px 10px;">
                 <div style="font-size:18px;margin-bottom:6px;">🔀</div>
-                <div class="tier-opt-label" style="font-size:9px;margin-bottom:3px;">4 Pagos</div>
+                <div class="tier-opt-label" style="font-size:9px;margin-bottom:3px;">2 Pagos</div>
                 <div class="tier-opt-price" style="font-size:18px;font-weight:900;color:var(--green);">10%</div>
                 <div style="font-size:8px;color:var(--text-muted);margin-top:2px;">descuento</div>
               </div>
@@ -1547,7 +1547,7 @@ function selectPayment(scheme) {
   if (_activePaymentScheme === scheme) {
     _activePaymentScheme = null;
     selectedPaymentDiscount = 0;
-    ['pago_anual','pago_4p'].forEach(function(id) {
+    ['pago_3p','pago_2p'].forEach(function(id) {
       var el = document.getElementById(id); if (el) el.classList.remove('selected');
     });
     var hint = document.getElementById('pago_calc_hint');
@@ -1557,17 +1557,17 @@ function selectPayment(scheme) {
   }
 
   var configs = {
-    anual: { disc:15, label:'Pago Anual · 15% OFF',     color:'var(--gold)' },
-    '4p':  { disc:10, label:'4 Pagos · 10% OFF',        color:'var(--green)' }
+    '3p':  { disc:15, label:'3 Pagos · 15% OFF',        color:'var(--gold)' },
+    '2p':  { disc:10, label:'2 Pagos · 10% OFF',        color:'var(--green)' }
   };
   var cfg = configs[scheme];
   if (!cfg) return;
   _activePaymentScheme = scheme;
   selectedPaymentDiscount = cfg.disc;
-  ['pago_anual','pago_4p'].forEach(function(id) {
+  ['pago_3p','pago_2p'].forEach(function(id) {
     var el = document.getElementById(id); if (el) el.classList.remove('selected');
   });
-  var map = { anual:'pago_anual', '4p':'pago_4p' };
+  var map = { '3p':'pago_3p', '2p':'pago_2p' };
   var target = document.getElementById(map[scheme]);
   if (target) target.classList.add('selected');
   var hint = document.getElementById('pago_calc_hint');
@@ -1717,7 +1717,7 @@ function recalc() {
 
   // ── Results
   var labelBase = users + ' usuarios · USD ' + PRICE_PER_USER_USD + '/u' + (desc > 0 ? ' −' + desc + '%' : '');
-  var labelDisc = pagoDisc > 0 ? ' · −' + pagoDisc + '% ' + (pagoDisc===15?'anual':'4p') : '';
+  var labelDisc = pagoDisc > 0 ? ' · −' + pagoDisc + '% ' + (pagoDisc===15?'3p':'2p') : '';
   document.getElementById('res_tier_label').textContent = users + ' usuarios × USD ' + priceUnitUSD.toFixed(2) + ' + $200 fee plataforma' + labelDisc;
   setText('res_plat_mxn', fmxn(platAno) + ' MXN/año');
   setText('res_plat_usd', '≈ ' + fusd(platAnoUSD) + ' / año');
@@ -1736,7 +1736,7 @@ function recalc() {
   // Payment discount row
   if (pagoDisc > 0) {
     show('res_pago_row');
-    setText('res_pago_label_val', pagoDisc + '% OFF (' + (pagoDisc===15?'Anual':'4 Pagos') + ')');
+    setText('res_pago_label_val', pagoDisc + '% OFF (' + (pagoDisc===15?'3 Pagos':'2 Pagos') + ')');
     setText('res_pago_mxn', '−' + fmxn(totalAnoBase - totalAno) + ' MXN/año');
     setText('res_pago_usd', '−' + fusd(totalAnoUSDBase - totalAnoUSD) + ' / año');
   } else { hide('res_pago_row'); }
